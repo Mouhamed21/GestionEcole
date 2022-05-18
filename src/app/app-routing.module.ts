@@ -28,6 +28,10 @@ import { LoginComponent } from './components/login/login.component';
 import { ErrorComponent } from './components/error/error.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AccessComponent } from './components/access/access.component';
+import {ClasseComponent} from "./components/classe/classe.component";
+import {EleveComponent} from "./components/eleve/eleve.component";
+import {ClasseDetailComponent} from "./components/classe-detail/classe-detail.component";
+// @ts-ignore
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -56,7 +60,11 @@ import { AccessComponent } from './components/access/access.component';
                     {path: 'pages/empty', component: EmptyComponent},
                     {path: 'icons', component: IconsComponent},
                     {path: 'blocks', component: BlocksComponent},
-                    {path: 'documentation', component: DocumentationComponent}
+                    {path: 'documentation', component: DocumentationComponent},
+                    {path: 'uikit/classe', component: ClasseComponent},
+                    {path: 'uikit/classe/:id', component: ClasseDetailComponent},
+                    {path: 'uikit/eleve', component: EleveComponent}
+
                 ],
             },
             {path:'pages/landing', component: LandingComponent},
@@ -69,5 +77,5 @@ import { AccessComponent } from './components/access/access.component';
     ],
     exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule { }
+

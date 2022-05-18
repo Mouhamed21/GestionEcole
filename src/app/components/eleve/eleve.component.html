@@ -1,0 +1,55 @@
+<div class="card">
+    <h5>Liste des Eleves</h5>
+    <p-toolbar styleClass="mb-4">
+<!--        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClasses()" [disabled]="!selectedClasses || !selectedClasses.length"></button>
+        </ng-template>-->
+
+        <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template>
+    </p-toolbar>
+    <p-table #dt [value]="eleves" [paginator]="true" [rows]="10"  [globalFilterFields]="['Prenom','Nom','Age']" responsiveLayout="scroll"
+             [rowHover]="true" dataKey="id"
+             [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="prenom">Prenom <p-sortIcon field="prenom"></p-sortIcon></th>
+                <th pSortableColumn="nom">Nom <p-sortIcon field="nom"></p-sortIcon></th>
+                <th pSortableColumn="age">Age <p-sortIcon field="age"></p-sortIcon></th>
+                <th></th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-eleve>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="eleve"></p-tableCheckbox>
+                </td>
+                <td>{{eleve.prenom}}</td>
+                <td>{{eleve.nom}}</td>
+                <td>{{eleve.age}}</td>
+                <td>
+<!--                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="openEdit(classe)" ></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteClasse(classe)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="openEleve(classe)" ></button>-->
+                    <!--                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="getElevesByClasse(classe.id)" ></button>-->
+
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+
+</div>

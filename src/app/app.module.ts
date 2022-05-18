@@ -140,6 +140,9 @@ import { LoginComponent } from './components/login/login.component';
 import { ErrorComponent } from './components/error/error.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AccessComponent } from './components/access/access.component';
+import { ClasseComponent } from './components/classe/classe.component';
+import { EleveComponent } from './components/eleve/eleve.component';
+import { ClasseDetailComponent } from './components/classe-detail/classe-detail.component';
 
 @NgModule({
     imports: [
@@ -273,6 +276,9 @@ import { AccessComponent } from './components/access/access.component';
         ErrorComponent,
         NotfoundComponent,
         AccessComponent,
+        ClasseComponent,
+        EleveComponent,
+        ClasseDetailComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
