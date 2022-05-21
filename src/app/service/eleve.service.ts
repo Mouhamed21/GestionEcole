@@ -10,6 +10,7 @@ import {Eleve} from "../modele/eleve";
 export class EleveService {
     baseUrl = environment.urlApi + '/eleve';
     baseUrl1 = environment.urlApi + '/eleve/classe';
+    baseUrl2 = environment.urlApi + '/eleve/effectifClasse';
   constructor(private httpClient: HttpClient) { }
 
     getEleves() {
@@ -18,6 +19,9 @@ export class EleveService {
 
     getElevesByClasse(id:number){
         return this.httpClient.get(`${this.baseUrl1}/${id}`);
+    }
+    getEffectifClasse(id:number){
+        return this.httpClient.get(`${this.baseUrl2}/${id}`);
     }
 
     postEleve(eleve: Eleve) {
@@ -28,7 +32,7 @@ export class EleveService {
         return this.httpClient.put(`${this.baseUrl}/${id}`, eleve)
     }
 
-    deleteClasse(id: number) {
+    deleteEleve(id: number) {
         return this.httpClient.delete(`${this.baseUrl}/${id}`)
     }
 

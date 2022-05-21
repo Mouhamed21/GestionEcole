@@ -36,7 +36,7 @@ export class ClasseComponent implements OnInit {
     selectedClasses: any;
     editClasseDialog: boolean;
     eleveDialog:boolean;
-
+    isLoading:false;
     classeSubject = new Subject<void>();
     constructor(private classeService: ClasseService, private eleveService: EleveService, private router: Router,
                 private messageService: MessageService, private confirmationService: ConfirmationService) { }
@@ -56,7 +56,6 @@ export class ClasseComponent implements OnInit {
     }
     public getOneClasse(classe: Classe){
         return this.router.navigate(['/uikit/classe', classe.id]);
-
     }
 
 
@@ -78,15 +77,16 @@ export class ClasseComponent implements OnInit {
         this.submitted = false;
         this.editClasseDialog = true;
     }
-    openEleve(cl:Classe) {
-        console.log('eee');
-        this.clas=cl;
-        console.log(this.clas);
-        this.submitted = false;
-        this.eleveDialog = true;
-    }
+    // openEleve(cl:Classe) {
+    //     console.log('eee');
+    //     this.clas=cl;
+    //     console.log(this.clas);
+    //     this.submitted = false;
+    //     this.eleveDialog = true;
+    // }
 
     public postClasse(){
+        this.submitted=true;
         return this.classeService.postClasse(this.classe).subscribe( data =>
             {
                 console.log(this.classe);
@@ -101,6 +101,7 @@ export class ClasseComponent implements OnInit {
     }
 
     public updateClasse(id:number, classe: Classe) {
+        this.submitted=true;
         return this.classeService.updateClasse(id,classe).subscribe(
             data => {
                 console.log(data);
@@ -119,6 +120,8 @@ export class ClasseComponent implements OnInit {
             message: 'Etes-vous sûr de vouloir supprimer ' + classe.nom + ' ?',
             header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Oui',
+            rejectLabel: 'Non',
             accept: () => {
                 this.classes = this.classes.filter(val => val.id !== classe.id);
                 this.classeService.deleteClasse(classe.id).subscribe();
@@ -129,9 +132,11 @@ export class ClasseComponent implements OnInit {
     }
     deleteSelectedClasses() {
         this.confirmationService.confirm({
-            message: 'Are you sure you want to delete the selected products?',
-            header: 'Confirm',
+            message: 'Êtes-vous sûr de vouloir supprimer les classes sélectionnées?',
+            header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Oui',
+            rejectLabel: 'Non',
             accept: () => {
                 this.classes = this.classes.filter(val => !this.selectedClasses.includes(val));
                 console.log(this.selectedClasses);

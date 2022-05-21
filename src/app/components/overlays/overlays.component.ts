@@ -75,6 +75,7 @@ export class OverlaysComponent implements OnInit {
     }
 
     formatCurrency(value) {
-        return value.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+         return value.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+        //return value.toLocaleString('fr-fr');
     }
 }

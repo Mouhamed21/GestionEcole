@@ -1,20 +1,32 @@
 <div class="card">
-    <h5>Liste des Eleves de la classe {{classe.nom }}</h5>
+    <h5>Gestion Eleve</h5>
     <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewest()"></button>
-                    <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedEleves()" [disabled]="!selectedEleves || !selectedEleves.length"></button>
-                </ng-template>
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewest()"></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedEleves()" [disabled]="!selectedEleves || !selectedEleves.length"></button>
+
+        </ng-template>
 
         <ng-template pTemplate="right">
+            <button pButton pRipple icon="pi pi-arrow-left"  class="p-button-primary mr-2" pTooltip="Retourner à la liste des Classes"  (click)="RetourClasses()"></button>
             <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
             <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>
     </p-toolbar>
-    <p-table #dt [value]="eleves" [paginator]="true" [rows]="10"  [globalFilterFields]="['Prenom','Nom','Age']" responsiveLayout="scroll"
+    <p-table #dt [value]="eleves" [paginator]="true" [rows]="10"  [globalFilterFields]="['prenom','nom','age']" responsiveLayout="scroll"
              [(selection)]="selectedEleves"
              [rowHover]="true" dataKey="id"
              [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Classe:  <p-badge value="{{classe.nom}}" size="large" severity="info"></p-badge> </h5>
+                <h5>Effectif:  <p-badge value="{{ nbrEleves }}" size="large" severity="info"></p-badge></h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                        </span>
+            </div>
+        </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 3rem">
@@ -23,8 +35,7 @@
                 <th pSortableColumn="prenom">Prenom <p-sortIcon field="prenom"></p-sortIcon></th>
                 <th pSortableColumn="nom">Nom <p-sortIcon field="nom"></p-sortIcon></th>
                 <th pSortableColumn="age">Age <p-sortIcon field="age"></p-sortIcon></th>
-                <th></th>
-
+                <th>Actions</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-eleve>
@@ -36,11 +47,10 @@
                 <td>{{eleve.nom}}</td>
                 <td>{{eleve.age}} ans</td>
                 <td>
-                    <!--                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="openEdit(classe)" ></button>
-                                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteClasse(classe)"></button>
-                                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="openEleve(classe)" ></button>-->
-                    <!--                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="getElevesByClasse(classe.id)" ></button>-->
-
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="openEditEleve(eleve)" pTooltip="Modifier un Eleve"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteEleve(eleve)" pTooltip="Supprimer un eleve"></button>
+<!--                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="openEleve(classe)" ></button>-->
+                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary" ></button>
                 </td>
             </tr>
         </ng-template>
@@ -52,10 +62,9 @@
             <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
         </ng-template>
     </p-table>
-
 </div>
 
-<p-dialog [(visible)]="eleveDialog" [style]="{width: '450px'}" header="Ajout d'une Eleve" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="eleveDialog" [style]="{width: '450px'}" header="Ajout d'un Eleve" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field p-col">
             <label for="prenom">Prenom</label>
@@ -63,7 +72,6 @@
             <small class="p-invalid" *ngIf="submitted && !eleve.prenom">Prenom est obligatoire.</small>
         </div>
         <div class="espace">
-
         </div>
         <div class="p-field p-col">
             <label for="nom">Nom</label>
@@ -79,11 +87,43 @@
         </div>
     </ng-template>
     <div class="espace">
-
     </div>
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
         <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text"  (click)="postEleve()" ></button>
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="editEleveDialog" [style]="{width: '450px'}" header="Modification d'un Eleve" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field p-col">
+
+            <label for="prenom">Prenom</label>
+            <input type="text" pInputText id="prenom" [(ngModel)]="elev.prenom" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !elev.nom">Prenom est obligatoire.</small>
+        </div>
+        <div class="espace">
+
+        </div>
+        <div class="p-field p-col">
+
+            <label for="nom">Nom</label>
+            <input type="text" pInputText id="nom" [(ngModel)]="elev.nom" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !elev.nom">Nom est obligatoire.</small>
+        </div>
+        <div class="espace">
+
+        </div>
+        <div class="p-field p-col">
+            <label for="age">Age</label>
+            <p-inputNumber id="age" [(ngModel)]="elev.age"></p-inputNumber>
+        </div>
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Modifier" icon="pi pi-check" class="p-button-text" (click)="updateEleve(elev.id,elev)" ></button>
     </ng-template>
 </p-dialog>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

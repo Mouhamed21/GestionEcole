@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EleveService} from "../../service/eleve.service";
 import {ClasseService} from "../../service/classe.service";
 import {Classe} from "../../modele/classe";
@@ -16,12 +16,14 @@ export class ClasseDetailComponent implements OnInit {
     public classeId;
     eleves:any;
     eleve:Eleve;
-    classe:Classe;
-    newClasse:Classe;
+    classe = new Classe;
     submitted: boolean;
     eleveDialog: boolean;
     selectedEleves: any;
-  constructor(private route: ActivatedRoute, private eleveService: EleveService, private classeService: ClasseService,
+    editEleveDialog:boolean;
+    elev:Eleve;
+    nbrEleves:any;
+  constructor(private route: ActivatedRoute, private eleveService: EleveService, private classeService: ClasseService, private router: Router,
               private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
@@ -29,6 +31,7 @@ export class ClasseDetailComponent implements OnInit {
       this.classeId = id;
       this.getElevesByClasse(id);
       this.getClasseById(id);
+      this.getEffectifClasse(id);
   }
     public getElevesByClasse(classeId){
         return this.eleveService.getElevesByClasse(classeId).subscribe((data) =>
@@ -37,6 +40,17 @@ export class ClasseDetailComponent implements OnInit {
             console.log(this.eleves);
         })
     }
+    public getEffectifClasse(classeId){
+        return this.eleveService.getEffectifClasse(classeId).subscribe((data) =>
+        {
+            this.nbrEleves = data;
+            console.log(this.nbrEleves);
+        })
+    }
+
+    public RetourClasses(){
+        return this.router.navigate(['/uikit/classe']);
+  }
 
     public getClasseById(classeId){
         return this.classeService.getClasseById(classeId).subscribe((data) =>
@@ -46,12 +60,13 @@ export class ClasseDetailComponent implements OnInit {
         })
     }
 
+
+
     first = 0;
 
     rows = 10;
 
     public postEleve(){
-        console.log(this.eleve.id);
         this.classe.eleves=[];
         console.log(this.classe);
         this.eleve.classe = this.classe;
@@ -67,17 +82,37 @@ export class ClasseDetailComponent implements OnInit {
                 console.log(error);
             });
     }
-
-
     openNewest() {
         this.eleve = {};
         this.submitted = false;
         this.eleveDialog = true;
     }
+    openEditEleve(el:Eleve) {
 
+        this.elev=el;
+        console.log(this.elev);
+        //this.classe = {};
+        this.submitted = false;
+        this.editEleveDialog = true;
+    }
+
+    public updateEleve(id:number, eleve: Eleve) {
+        return this.eleveService.updateEleve(id,eleve).subscribe(
+            data => {
+                console.log(data);
+                this.editEleveDialog = false;
+                this.eleve = {};
+                this.getElevesByClasse(this.classeId);
+            },
+            error => {
+                console.log(error);
+            }
+        );
+    }
     hideDialog() {
         this.eleveDialog = false;
         this.submitted = false;
+        this.editEleveDialog = false;
        // this.editClasseDialog = false;
     }
 
@@ -97,21 +132,36 @@ export class ClasseDetailComponent implements OnInit {
         return this.eleves ? this.first === 0 : true;
     }
 
-    deleteSelectedEleves() {
-        console.log("sdfgh");
+    deleteEleve(eleve: Eleve) {
         this.confirmationService.confirm({
-            message: 'Are you sure you want to delete the selected products?',
-            header: 'Confirm',
+            message: 'Etes-vous sûr de vouloir supprimer ' + eleve.prenom + ' ' +eleve.nom +' ?',
+            header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Oui',
+            rejectLabel: 'Non',
+            accept: () => {
+                this.eleves = this.eleves.filter(val => val.id !== eleve.id);
+                this.eleveService.deleteEleve(eleve.id).subscribe();
+                this.eleve = {};
+                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Eleve Supprimé', life: 3000});
+            }
+        });
+    }
+
+    deleteSelectedEleves() {
+        this.confirmationService.confirm({
+            message: 'Êtes-vous sûr de vouloir supprimer les eleves sélectionnés',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Oui',
+            rejectLabel: 'Non',
             accept: () => {
                 this.eleves = this.eleves.filter(val => !this.selectedEleves.includes(val));
                 console.log(this.selectedEleves);
                 this.eleveService.deleteAllEleves(this.selectedEleves).subscribe();
                 this.selectedEleves = null;
-                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
+                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Eleve(s) Supprimé(s)', life: 3000});
             }
         });
     }
-
-
 }
