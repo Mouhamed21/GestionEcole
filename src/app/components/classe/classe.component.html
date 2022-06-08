@@ -1,3 +1,10 @@
+<p-toast></p-toast>
+<!--<div class="col-12">
+    <div class="card card-w-title">
+        <h5>Breadcrumb</h5>
+        <p-breadcrumb [model]="breadcrumbItems" [home]="{icon: 'pi pi-home'}"></p-breadcrumb>
+    </div>
+</div>-->
 <div class="card">
     <h5>Gestion des Classes</h5>
     <p-toolbar styleClass="mb-4">
@@ -11,7 +18,7 @@
             <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>
     </p-toolbar>
-    <p-table #dt [value]="classes" [paginator]="true" [rows]="10"  [globalFilterFields]="['nom']" responsiveLayout="scroll"
+    <p-table  #dt [value]="classes" [paginator]="true" [rows]="10"  [globalFilterFields]="['nom']" responsiveLayout="scroll"
              [(selection)]="selectedClasses" [rowHover]="true" dataKey="id"
              [rowsPerPageOptions]="[10,25,50]">
         <ng-template pTemplate="caption">
@@ -41,15 +48,11 @@
                     <p-tableCheckbox [value]="classe"></p-tableCheckbox>
                 </td>
                 <td>{{classe.nom}}</td>
-
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="openEdit(classe)" pTooltip="Modifier une classe" ></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClasse(classe)" pTooltip="Modifier une classe" ></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteClasse(classe)" pTooltip="Supprimer une classe" ></button>
-                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary "  (click)="getOneClasse(classe)" pTooltip="Détails" ></button>
-
-
+                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary"  (click)="getOneClasse(classe)" pTooltip="Détails" ></button>
                 </td>
-
             </tr>
         </ng-template>
 
@@ -64,7 +67,6 @@
 </div>
 
 <p-dialog [(visible)]="classeDialog" [style]="{width: '450px'}" header="Ajout d'une Classe" [modal]="true" styleClass="p-fluid">
-
         <ng-template pTemplate="content">
             <div class="p-field p-col">
                 <label for="nom">Nom</label>
@@ -82,23 +84,6 @@
         </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="editClasseDialog" [style]="{width: '450px'}" header="Modifier Une Classe" [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="p-field p-col">
-
-            <label for="nom">Nom</label>
-            <input type="text" pInputText id="nom" [(ngModel)]="clas.nom" required autofocus />
-            <small class="p-error" *ngIf="submitted && !clas.nom">Nom est obligatoire.</small>
-        </div>
-    </ng-template>
-    <div class="espace">
-
-    </div>
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Modifier" icon="pi pi-check" class="p-button-text" (click)="updateClasse(clas.id,clas)" ></button>
-    </ng-template>
-</p-dialog>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 
 

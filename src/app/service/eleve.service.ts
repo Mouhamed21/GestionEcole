@@ -11,6 +11,7 @@ export class EleveService {
     baseUrl = environment.urlApi + '/eleve';
     baseUrl1 = environment.urlApi + '/eleve/classe';
     baseUrl2 = environment.urlApi + '/eleve/effectifClasse';
+    baseUrl3 = environment.urlApi + '/eleve/effectifEcole';
   constructor(private httpClient: HttpClient) { }
 
     getEleves() {
@@ -22,6 +23,10 @@ export class EleveService {
     }
     getEffectifClasse(id:number){
         return this.httpClient.get(`${this.baseUrl2}/${id}`);
+    }
+
+    getEffectifEcole(){
+        return this.httpClient.get(`${this.baseUrl3}`);
     }
 
     postEleve(eleve: Eleve) {

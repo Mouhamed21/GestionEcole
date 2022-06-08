@@ -18,11 +18,13 @@ export class ClasseDetailComponent implements OnInit {
     eleve:Eleve;
     classe = new Classe;
     submitted: boolean;
+    validerEmail: boolean;
     eleveDialog: boolean;
     selectedEleves: any;
     editEleveDialog:boolean;
     elev:Eleve;
     nbrEleves:any;
+    //valid:boolean;
   constructor(private route: ActivatedRoute, private eleveService: EleveService, private classeService: ClasseService, private router: Router,
               private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -33,6 +35,10 @@ export class ClasseDetailComponent implements OnInit {
       this.getClasseById(id);
       this.getEffectifClasse(id);
   }
+
+    updatedate(event) {
+        this.eleve.dateNaissance = new Date(event);
+    }
     public getElevesByClasse(classeId){
         return this.eleveService.getElevesByClasse(classeId).subscribe((data) =>
         {
@@ -60,55 +66,81 @@ export class ClasseDetailComponent implements OnInit {
         })
     }
 
-
-
     first = 0;
 
     rows = 10;
 
-    public postEleve(){
-        this.classe.eleves=[];
-        console.log(this.classe);
-        this.eleve.classe = this.classe;
-        console.log(this.eleve);
-        return this.eleveService.postEleve(this.eleve).subscribe( data =>
-            {
-                console.log(this.classeId);
-                this.eleve = {};
-                this.eleveDialog = false;
-                this.getElevesByClasse(this.classeId);
-            },
-            error => {
-                console.log(error);
-            });
+    editEleve(eleve: Eleve) {
+        this.eleve = {...eleve};
+        this.eleveDialog = true;
     }
+     public postEleve() {
+
+        if (this.isValidEmail(this.eleve.email) === false){
+
+            this.validerEmail=false;
+            if (this.eleve.email){
+                this.validerEmail=false;
+                this.messageService.add({severity:'error', summary: 'Echéc', detail: "L'Email n'est pas valide", life: 3000});
+            }
+
+        }
+        else {
+
+            this.validerEmail=true;
+
+        }
+         this.submitted = true;
+        if (this.validerEmail == true || !this.eleve.email){
+            if (this.eleve.prenom.trim() && this.eleve.nom.trim() && this.eleve.dateNaissance.toString().trim() && this.eleve.lieuNaissance.trim()
+                 && this.eleve.adresse.trim()) {
+                if (this.eleve.id) {
+                    this.eleveService.updateEleve(this.eleve.id,this.eleve).subscribe(
+                        data => {
+                            console.log(data);
+                            this.editEleveDialog = false;
+                            this.eleve = {};
+                            this.getElevesByClasse(this.classeId);
+                        },
+                        error => {
+                            console.log(error);
+                        }
+                    );
+                    this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Mise à jour Eleve avec succé', life: 3000});
+                }
+                else {
+                    this.classe.eleves=[];
+                    console.log(this.classe);
+                    this.eleve.classe = this.classe;
+                    console.log(this.eleve);
+                    this.eleveService.postEleve(this.eleve).subscribe( data =>
+                        {
+                            console.log(this.classeId);
+                            this.eleve = {};
+                            this.eleveDialog = false;
+                            this.getElevesByClasse(this.classeId);
+                            this.getEffectifClasse(this.classeId);
+                        },
+                        error => {
+                            console.log(error);
+                        });
+                    this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Eleve', life: 3000});
+                }
+
+                this.eleves = [...this.eleves];
+                this.eleveDialog = false;
+                this.eleve = {};
+            }
+        }
+
+    }
+
     openNewest() {
         this.eleve = {};
         this.submitted = false;
         this.eleveDialog = true;
     }
-    openEditEleve(el:Eleve) {
 
-        this.elev=el;
-        console.log(this.elev);
-        //this.classe = {};
-        this.submitted = false;
-        this.editEleveDialog = true;
-    }
-
-    public updateEleve(id:number, eleve: Eleve) {
-        return this.eleveService.updateEleve(id,eleve).subscribe(
-            data => {
-                console.log(data);
-                this.editEleveDialog = false;
-                this.eleve = {};
-                this.getElevesByClasse(this.classeId);
-            },
-            error => {
-                console.log(error);
-            }
-        );
-    }
     hideDialog() {
         this.eleveDialog = false;
         this.submitted = false;
@@ -141,9 +173,17 @@ export class ClasseDetailComponent implements OnInit {
             rejectLabel: 'Non',
             accept: () => {
                 this.eleves = this.eleves.filter(val => val.id !== eleve.id);
-                this.eleveService.deleteEleve(eleve.id).subscribe();
+                this.eleveService.deleteEleve(eleve.id).subscribe(data =>
+                    {
+                        this.getElevesByClasse(this.classeId);
+                        this.getEffectifClasse(this.classeId);
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
                 this.eleve = {};
-                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Eleve Supprimé', life: 3000});
+                this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Eleve Supprimé', life: 3000});
             }
         });
     }
@@ -158,10 +198,28 @@ export class ClasseDetailComponent implements OnInit {
             accept: () => {
                 this.eleves = this.eleves.filter(val => !this.selectedEleves.includes(val));
                 console.log(this.selectedEleves);
-                this.eleveService.deleteAllEleves(this.selectedEleves).subscribe();
+                this.eleveService.deleteAllEleves(this.selectedEleves).subscribe(data =>
+                    {
+                        this.getElevesByClasse(this.classeId);
+                        this.getEffectifClasse(this.classeId);
+                    },
+                    error => {
+                        console.log(error);
+                    });
                 this.selectedEleves = null;
-                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Eleve(s) Supprimé(s)', life: 3000});
+                this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Eleve(s) Supprimé(s)', life: 3000});
             }
         });
     }
+    public isValidEmail(email: string): boolean {
+        try {
+            let pattern = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$");
+            let valid = pattern.test(email);
+            console.log(valid);
+            return valid;
+        } catch (TypeError) {
+            return false;
+        }
+    }
+
 }

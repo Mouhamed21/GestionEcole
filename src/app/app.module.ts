@@ -88,7 +88,7 @@ import { TreeSelectModule } from 'primeng/treeselect';
 import { TreeTableModule } from 'primeng/treetable';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { BlockViewer } from './components/blockviewer/blockviewer.component';
- 
+
 import { AppCodeModule } from './components/app-code/app.code.component';
 import { AppComponent } from './app.component';
 import { AppMainComponent } from './app.main.component';
@@ -143,6 +143,7 @@ import { AccessComponent } from './components/access/access.component';
 import { ClasseComponent } from './components/classe/classe.component';
 import { EleveComponent } from './components/eleve/eleve.component';
 import { ClasseDetailComponent } from './components/classe-detail/classe-detail.component';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @NgModule({
     imports: [
@@ -233,6 +234,7 @@ import { ClasseDetailComponent } from './components/classe-detail/classe-detail.
         VirtualScrollerModule,
         AppCodeModule,
         StyleClassModule,
+        ProgressSpinnerModule,
     ],
     declarations: [
         AppComponent,

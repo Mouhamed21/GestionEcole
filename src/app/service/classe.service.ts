@@ -20,8 +20,6 @@ export class ClasseService {
         return this.httpClient.get(`${this.baseUrl}/${id}`);
     }
 
-
-
     postClasse(classe: Classe) {
         return this.httpClient.post(`${this.baseUrl}`, classe)
     }
