@@ -31,6 +31,7 @@ import { AccessComponent } from './components/access/access.component';
 import {ClasseComponent} from "./components/classe/classe.component";
 import {EleveComponent} from "./components/eleve/eleve.component";
 import {ClasseDetailComponent} from "./components/classe-detail/classe-detail.component";
+import {NiveauComponent} from "./components/niveau/niveau.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -63,8 +64,8 @@ import {ClasseDetailComponent} from "./components/classe-detail/classe-detail.co
                     {path: 'documentation', component: DocumentationComponent},
                     {path: 'uikit/classe', component: ClasseComponent},
                     {path: 'uikit/classe/:id', component: ClasseDetailComponent},
-                    {path: 'uikit/eleve', component: EleveComponent}
-
+                    {path: 'uikit/eleve', component: EleveComponent},
+                    {path: 'uikit/niveau', component: NiveauComponent}
                 ],
             },
             {path:'pages/landing', component: LandingComponent},

@@ -9,6 +9,8 @@ import {ClasseService} from "../../service/classe.service";
 import {Classe} from "../../modele/classe";
 import {EleveService} from "../../service/eleve.service";
 import {Eleve} from "../../modele/eleve";
+import {Niveau} from "../../modele/niveau";
+import {NiveauService} from "../../service/niveau.service";
 
 
 @Component({
@@ -29,28 +31,29 @@ export class ClasseComponent implements OnInit {
     classes: any;
     classe: Classe;
     clas:any;
-
     elev:any;
     eleve: Eleve;
     submitted: boolean;
     classeDialog: boolean;
-    selectedClasses: any;
     editClasseDialog: boolean;
     eleveDialog:boolean;
+    selectedClasses: any;
     isLoading:boolean;
     classeSubject = new Subject<void>();
     breadcrumbItems: MenuItem[];
-    constructor(private classeService: ClasseService, private eleveService: EleveService, private router: Router,
+    niveaux:any;
+    niveau:Niveau;
+    filteredNiveaux: Niveau[];
+    filteredNiveau: Niveau[];
+    constructor(private classeService: ClasseService, private eleveService: EleveService, private niveauService:NiveauService, private router: Router,
                 private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
     ngOnInit(): void {
         this.getClasses();
 
-        this.eleveService.getEleves().subscribe(data => this.eleves = data);
-/*        this.breadcrumbItems = [];
-        this.breadcrumbItems.push({ label: 'Classes' });
-        this.breadcrumbItems.push({ label: 'Eleve' });*/
+        this.getNiveaux();
 
+        this.eleveService.getEleves().subscribe(data => this.eleves = data);
     }
 
     public getClasses(){
@@ -93,14 +96,25 @@ export class ClasseComponent implements OnInit {
     //     this.eleveDialog = true;
     // }
 
+    public getNiveaux(){
+        console.log('On Init ...');
+        return this.niveauService.getNiveaux().subscribe((data) =>
+        {
+            console.log(data);
+            this.niveaux = data;
+        })
+    }
+
     editClasse(classe: Classe) {
         this.classe = {...classe};
-        this.classeDialog = true;
+        this.niveau = {...classe.niveau}
+        //this.classeDialog = true;
+        this.editClasseDialog=true;
     }
     public postClasse() {
         this.submitted = true;
-
-        if (this.classe.nom.trim()) {
+        console.log(this.niveau)
+        if (this.classe.nom.trim() && this.niveau) {
             if (this.classe.id) {
                 this.classeService.updateClasse(this.classe.id,this.classe).subscribe(
                     data => {
@@ -116,53 +130,25 @@ export class ClasseComponent implements OnInit {
                 this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Mis à jour Classe', life: 3000});
             }
             else {
+                this.classe.niveau = this.niveau;
                 this.classeService.postClasse(this.classe).subscribe( data =>
                 {
+                        this.classe={};
                         console.log(this.classe);
                         this.classeSubject.next();
                         this.classeDialog = false;
-
+                        //this.niveau=null;
                         this.getClasses();
                 }),
                 this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Classe', life: 3000});
             }
-
             this.classes = [...this.classes];
             this.classeDialog = false;
+            this.editClasseDialog=false;
             this.classe = {};
+            this.niveau=null;
         }
     }
-
-
-    // public postClasse(){
-    //     this.submitted=true;
-    //     return this.classeService.postClasse(this.classe).subscribe( data =>
-    //         {
-    //             console.log(this.classe);
-    //             this.classeSubject.next();
-    //             this.classeDialog = false;
-    //
-    //             this.getClasses();
-    //         },
-    //         error => {
-    //             console.log(error);
-    //         });
-    // }
-
-    // public updateClasse(id:number, classe: Classe) {
-    //     this.submitted=true;
-    //     return this.classeService.updateClasse(id,classe).subscribe(
-    //         data => {
-    //             console.log(data);
-    //             this.editClasseDialog = false;
-    //             this.classe = {};
-    //             this.getClasses();
-    //         },
-    //         error => {
-    //             console.log(error);
-    //         }
-    //     );
-    // }
 
     deleteClasse(classe: Classe) {
         this.confirmationService.confirm({
@@ -209,10 +195,35 @@ export class ClasseComponent implements OnInit {
         });
     }
 
+    filterniveau(event) {
+        const filtered: Niveau[] = [];
+        const query = event.query;
+        for (let i = 0; i < this.niveaux.length; i++) {
+            const niveau = this.niveaux[i];
+            if (this.classe.niveau.nom.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(niveau);
+            }
+        }
+        this.filteredNiveau = filtered;
+    }
+
+    filterNiveau(event) {
+        const filter: Niveau[] = [];
+        const query = event.query;
+        for (let i = 0; i < this.niveaux.length; i++) {
+            let clas = this.niveaux[i];
+            if (clas.nom.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filter.push(clas);
+            }
+        }
+        this.filteredNiveaux = filter;
+    }
+
     hideDialog() {
         this.classeDialog = false;
         this.submitted = false;
         this.editClasseDialog = false;
+        this.niveau=null;
     }
 
     next() {

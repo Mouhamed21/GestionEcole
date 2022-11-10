@@ -13,3 +13,24 @@ $height: 20px;
     left: 81%;
 
 }
+
+a{
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+}
+.spinner
+{
+    position: absolute;
+    left: 45%;
+    top: 45%;
+    justify-content: center;
+}
+
+
+.flex-column {
+    flex-direction:  row !important;
+}
+
+
+

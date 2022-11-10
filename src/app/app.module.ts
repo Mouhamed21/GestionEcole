@@ -144,6 +144,8 @@ import { ClasseComponent } from './components/classe/classe.component';
 import { EleveComponent } from './components/eleve/eleve.component';
 import { ClasseDetailComponent } from './components/classe-detail/classe-detail.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import { StatutComponent } from './components/statut/statut.component';
+import { NiveauComponent } from './components/niveau/niveau.component';
 
 @NgModule({
     imports: [
@@ -281,6 +283,8 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
         ClasseComponent,
         EleveComponent,
         ClasseDetailComponent,
+        StatutComponent,
+        NiveauComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

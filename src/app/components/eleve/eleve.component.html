@@ -35,7 +35,7 @@
                 <th pSortableColumn="dateNaissance">Date Naissance <p-sortIcon field="dateNaissance"></p-sortIcon></th>
                 <th pSortableColumn="classe">Classe<p-sortIcon field="classe"></p-sortIcon></th>
                 <th pSortableColumn="adresse">Adresse <p-sortIcon field="adresse"></p-sortIcon></th>
-                <th></th>
+                <th pSortableColumn="adresse">Actions<p-sortIcon field="adresse"></p-sortIcon></th>
 
             </tr>
         </ng-template>
@@ -49,12 +49,10 @@
                 <td>{{eleve.dateNaissance | date: 'dd/MM/yyyy' }}</td>
                 <td>{{eleve.classe.nom}}</td>
                 <td>{{eleve.adresse}}</td>
-
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEleve(eleve)" pTooltip="Modifier un Eleve"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteEleve(eleve)" pTooltip="Supprimer un eleve"></button>
-                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary" ></button>
-
+                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary" (click)="getDetailEleve(eleve)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -66,7 +64,7 @@
             <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
         </ng-template>
     </p-table>
-    <p-dialog [(visible)]="eleveDialog" [style]="{width: '450px'}" header="Ajout d'un Eleve" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="eleveDialog" [closable]="false" [style]="{width: '450px'}" header="Ajout d'un Eleve" [modal]="true" styleClass="p-fluid">
         <ng-template pTemplate="content">
 
             <div class="formgrid grid">
@@ -84,11 +82,9 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="dateNaissance">Date de Naissance</label>
-                    <!--                <input type="text" class="datepicker" placeholder="ex. MM/DD/YYYY" pInputText  id="dateNaissance"  (ngModelChange)="updatedate($event)" [ngModel]="eleve.dateNaissance |date:'yyyy-MM-dd'"  required autofocus/>-->
-                    <input name="dateT"  pInputText id="dateNaissance" placeholder="MM/DD/YYYY"  (ngModelChange)="updatedate($event)" [ngModel]="eleve.dateNaissance |date:'yyyy-MM-dd'" #dateT="ngModel" type="date"/>
+<!--                    <input name="dateT"  pInputText id="dateNaissance" placeholder="MM/DD/YYYY"  (ngModelChange)="updatedate($event)" [ngModel]="eleve.dateNaissance |date:'yyyy-MM-dd'" #dateT="ngModel" type="date"/>-->
 
-                    <!--                    <p-calendar type="text" class="datepicker" placeholder="ex. MM/DD/YYYY" pInputText  id="dateNaissance"  [(ngModel)]="eleve.dateNaissance" required autofocus></p-calendar>-->
-
+                    <p-calendar appendTo="body"  placeholder="DD/MM/YYYY" id="dateNaissance" [showIcon]="true" [maxDate]="dateJour" [(ngModel)]="eleve.dateNaissance" required></p-calendar>
                     <small class="p-error" *ngIf="submitted && !eleve.dateNaissance">Date de Naissance est obligatoire.</small>
                 </div>
                 <div class="field col">
@@ -100,42 +96,50 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="telephone">Telephone</label>
-                    <p-inputNumber id="telephone" [(ngModel)]="eleve.telephone" placeholder="77 747 87 99" ></p-inputNumber>
+                    <p-inputMask mask="99 999-99-99" [(ngModel)]="eleve.telephone" placeholder="77 777-66-77"></p-inputMask>
+
+                    <!--                    <p-inputNumber id="telephone" [(ngModel)]="eleve.telephone" placeholder="77 747 87 99" ></p-inputNumber>-->
                 </div>
                 <div class="field col">
                     <label for="numeroContact">Numero Tuteur</label>
-                    <p-inputNumber id="numeroContact" [(ngModel)]="eleve.numeroContact" placeholder="77 747 87 99"></p-inputNumber>
+                    <p-inputMask mask="99 999-99-99" [(ngModel)]="eleve.numeroContact" placeholder="77 777-66-77"></p-inputMask>
+<!--                    <p-inputNumber id="numeroContact" [(ngModel)]="eleve.numeroContact" placeholder="77 747 87 99"></p-inputNumber>-->
                 </div>
             </div>
             <div class="field col">
                 <label for="nom">Classe</label>
 <!--                <p-dropdown *ngIf="!eleve.id" [options]="classes" [(ngModel)]="classe" optionLabel="nom" ></p-dropdown>-->
 <!--                <p-dropdown *ngIf="eleve.id" [options]="classes" [(ngModel)]="classe" optionLabel="nom" editable="true" ></p-dropdown>-->
-                <p-autoComplete  placeholder="Choisissez une classe"  [dropdown]="true" [(ngModel)]="classe"
+                <p-autoComplete appendTo="body"  placeholder="Choisissez une classe"  [dropdown]="true" [(ngModel)]="classe" required autofocus showClear="true"
+                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !classe}"
                                 [suggestions]="filteredClasses" showEmptyMessage="Liste des classes vides"
                                 (completeMethod)="filterClasse($event)"  field="nom"></p-autoComplete>
-
+                <small class="p-error" *ngIf="submitted && !classe">Choisir une Classe.</small>
 
             </div>
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="adresse">Adresse</label>
-                    <input type="text" pInputText id="adresse" [(ngModel)]="eleve.adresse" placeholder="Adresse" required autofocus />
+                    <input type="text" pInputText id="adresse"  [(ngModel)]="eleve.adresse" placeholder="Adresse" required autofocus />
                     <small class="p-error" *ngIf="submitted && !eleve.adresse">Adresse est obligatoire</small>
                 </div>
                 <div class="field col">
                     <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder="abc@gmail.com" [(ngModel)]="eleve.email"
-                           pInputText  autofocus/>
-                    <small class="p-error" *ngIf="validerEmail==false && eleve.email">Email invalide </small>
+                    <input type="email" name="email" id="email" [ngModelOptions]="{ updateOn: 'blur' }" #emailerror="ngModel"
+                           placeholder="abc@gmail.com" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$ " [(ngModel)]="eleve.email" pInputText autofocus/>
+                    <div *ngIf="emailerror.invalid && (emailerror.dirty || emailerror.touched)">
+                        <div *ngIf="emailerror.errors.required">
+                            <span class="p-error">Email is required </span>
+                        </div>
+                        <div *ngIf="emailerror.errors.pattern">
+                            <span class="p-error">Invalid EmailL </span>
+                        </div>
+                    </div>
 
-                    <!--                <small  *ngIf="validerEmail==true">Email valide</small>-->
-                    <!--                <div *ngIf="emailerror.invalid && (emailerror.dirty || emailerror.touched)">-->
-                    <!--                    <div *ngIf="emailerror.errors.pattern ">-->
-                    <!--                        <span class="p-error">Email invalide </span>-->
-                    <!--                    </div>-->
-                    <!--                </div>-->
+                   <!-- <small class="p-error" *ngIf="emailerror.invalid && eleve.email">Email invalide </small>
+                    <small *ngIf="emailerror.valid && eleve.email">Email valide </small>-->
 
+<!--                    <small class="p-error" *ngIf="validerEmail==false && eleve.email">Email invalide </small>-->
 
                 </div>
 
@@ -146,11 +150,11 @@
         <div class="espace">
         </div>
         <ng-template pTemplate="footer">
-            <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Enregistrer"  icon="pi pi-check" class="p-button-text"  (click)="postEleve()" ></button>
+            <button pButton pRipple label="Annuler" class="p-button-danger" icon="pi pi-times"  (click)="hideDialog()"></button>
+            <button pButton pRipple label="Enregistrer"  class="p-button-success" icon="pi pi-check"   (click)="postEleve()" ></button>
         </ng-template>
     </p-dialog>
-    <p-dialog [(visible)]="eleveDialog2" [style]="{width: '450px'}" header="Modification d'un Eleve" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="eleveDialog2"  [style]="{width: '450px'}" header="Modification d'un Eleve" [modal]="true" styleClass="p-fluid">
         <ng-template pTemplate="content">
 
             <div class="formgrid grid">
@@ -168,11 +172,8 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="dateNaissance">Date de Naissance</label>
-                    <!--                <input type="text" class="datepicker" placeholder="ex. MM/DD/YYYY" pInputText  id="dateNaissance"  (ngModelChange)="updatedate($event)" [ngModel]="eleve.dateNaissance |date:'yyyy-MM-dd'"  required autofocus/>-->
-                    <input name="dateT"  pInputText id="dateNaissance" placeholder="MM/DD/YYYY"  (ngModelChange)="updatedate($event)" [ngModel]="eleve.dateNaissance |date:'yyyy-MM-dd'" #dateT="ngModel" type="date"/>
-
-                    <!--                    <p-calendar type="text" class="datepicker" placeholder="ex. MM/DD/YYYY" pInputText  id="dateNaissance"  [(ngModel)]="eleve.dateNaissance" required autofocus></p-calendar>-->
-
+                    <p-calendar appendTo="body" placeholder="{{eleve.dateNaissance |date:'dd-MM-yyyy'}}" id="dateNaissance"  [showIcon]="true"
+                                [maxDate]="dateJour"  [(ngModel)]="eleve.dateNaissance"  required></p-calendar>
                     <small class="p-error" *ngIf="submitted && !eleve.dateNaissance">Date de Naissance est obligatoire.</small>
                 </div>
                 <div class="field col">
@@ -184,22 +185,18 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="telephone">Telephone</label>
-                    <p-inputNumber id="telephone" [(ngModel)]="eleve.telephone" placeholder="77 747 87 99" ></p-inputNumber>
+                    <p-inputMask mask="99 999-99-99" id="telephone" [(ngModel)]="eleve.telephone"></p-inputMask>
                 </div>
                 <div class="field col">
                     <label for="numeroContact">Numero Tuteur</label>
-                    <p-inputNumber id="numeroContact" [(ngModel)]="eleve.numeroContact" placeholder="77 747 87 99"></p-inputNumber>
+                    <p-inputMask id="numeroContact" mask="99 999-99-99" [(ngModel)]="eleve.numeroContact"></p-inputMask>
                 </div>
             </div>
             <div class="field col">
                 <label for="nom">Classe</label>
-                <!--                <p-dropdown *ngIf="!eleve.id" [options]="classes" [(ngModel)]="classe" optionLabel="nom" ></p-dropdown>-->
-<!--                                <p-dropdown [options]="classes" [(ngModel)]="classe" optionLabel="nom" editable="true"   ></p-dropdown>-->
-
-                <p-autoComplete  [dropdown]="true" [(ngModel)]="eleve.classe"
+                <p-autoComplete appendTo="body" [dropdown]="true" [(ngModel)]="eleve.classe"
                                 [suggestions]="filteredClasse" [multiple]="false"
                                 (completeMethod)="filterclasse($event)" id="classe" field="nom"></p-autoComplete>
-
             </div>
             <div class="formgrid grid">
                 <div class="field col">
@@ -212,26 +209,370 @@
                     <input type="email" name="email" id="email" placeholder="abc@gmail.com" [(ngModel)]="eleve.email"
                            pInputText  autofocus/>
                     <small class="p-error" *ngIf="validerEmail==false && eleve.email">Email invalide </small>
-
-                    <!--                <small  *ngIf="validerEmail==true">Email valide</small>-->
-                    <!--                <div *ngIf="emailerror.invalid && (emailerror.dirty || emailerror.touched)">-->
-                    <!--                    <div *ngIf="emailerror.errors.pattern ">-->
-                    <!--                        <span class="p-error">Email invalide </span>-->
-                    <!--                    </div>-->
-                    <!--                </div>-->
-
-
                 </div>
-
             </div>
-
         </ng-template>
 
         <div class="espace">
         </div>
         <ng-template pTemplate="footer">
-            <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Enregistrer"  icon="pi pi-check" class="p-button-text"  (click)="postEleve()" ></button>
+            <button pButton pRipple label="Annuler" class="p-button-danger" icon="pi pi-times" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Enregistrer" class="p-button-success"  icon="pi pi-check"  (click)="postEleve()" ></button>
+        </ng-template>
+    </p-dialog>
+    <p-dialog [(visible)]="detailDialog"  [resizable]="true" [maximizable]="true" [breakpoints]="{'1300px': '140vw'}" [style]="{width: '60vw'}" header="Détail Eleve" [closable]="false" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+
+            <br>
+            <!--   <div class="global">
+                   <table class="tableaugauche">
+                       <tr>
+                           <td>
+                               <a class="gauche">Nom & Prenom:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite" value="{{beneficiaire.nomPrenom}}" size="large" severity="info"></p-badge>
+                           </td>
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Numero de Pension:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite"  value="{{beneficiaire.numPension}}" size="large" severity="info"></p-badge>
+                           </td>
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Civilité:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite"  value="{{beneficiaire.civilite}}" size="large" severity="info"></p-badge>
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Adresse:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite"  value="{{beneficiaire.adresse}}" size="large" severity="info"></p-badge>
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Code Postal:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite" value="{{beneficiaire.codePostal}}" size="large" severity="info"></p-badge>
+
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Numero Piece:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite" value="{{beneficiaire.numPiece}}" size="large" severity="info"></p-badge>
+
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Type Piece:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite" value="{{beneficiaire.typePiece}}" size="large" severity="info"></p-badge>
+
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Nationalité:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite" value="{{beneficiaire.nationalite}}" size="large" severity="info"></p-badge>
+
+                           </td>
+
+                       </tr>
+                   </table>
+                   <table class="tableaudroite">
+                       <tr>
+                           <td>
+                               <a class="gauche">Adresse Complementaire:</a>
+                           </td>
+                           <td>
+       &lt;!&ndash;                        <p-badge class="droite"  value="{{beneficiaire.adresseComplementaire}} " size="large" severity="info"></p-badge>&ndash;&gt;
+                               {{beneficiaire.adresseComplementaire}}
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Commune:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite"  value="{{beneficiaire.commune}}" size="large" severity="info"></p-badge>
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Date de Naissance:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite"  value="{{beneficiaire.dateNaissance  | date: 'dd/MM/yyyy'}}" size="large" severity="info"></p-badge>
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Date d'enregistrement:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite"  value="{{beneficiaire.dateChargement | date: 'dd/MM/yyyy' }}" size="large" severity="info"></p-badge>
+                           </td>
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Téléphone:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite"  value="{{beneficiaire.telephone }}" size="large" severity="info"></p-badge>
+                           </td>
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Date Délivrance Piece:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite" value="{{beneficiaire.dateDelivrancePiece | date: 'dd/MM/yyyy'}}" size="large" severity="info"></p-badge>
+
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Date d'expiration piece:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite" value="{{beneficiaire.dateExpirationPiece | date: 'dd/MM/yyyy'}}" size="large" severity="info"></p-badge>
+
+                           </td>
+
+                       </tr>
+                       <br>
+                       <tr>
+                           <td>
+                               <a class="gauche">Fichier:</a>
+                           </td>
+                           <td>
+                               <p-badge class="droite" value="{{beneficiaire.fileName}}" size="large" severity="info"></p-badge>
+
+                           </td>
+
+                       </tr>
+
+                   </table>
+
+               </div>-->
+            <p-splitter [style]="{'height': 'auto'}">
+                <ng-template pTemplate>
+                    <table class="tableaugauche">
+                        <tr>
+                            <td>
+                                <a class="gauche">Nom:</a>
+                            </td>
+                            <td>
+                                {{eleve.nom}}
+                            </td>
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Prenom:</a>
+                            </td>
+                            <td>
+                                {{eleve.prenom}}
+                            </td>
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Email:</a>
+                            </td>
+                            <td>
+                                {{eleve.email}}
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Adresse:</a>
+                            </td>
+                            <td>
+                                {{eleve.adresse}}
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Date de Naissance:</a>
+                            </td>
+                            <td>
+                                {{eleve.dateNaissance | date: 'dd/MM/yyyy'}}
+
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Lieu de Naissance:</a>
+                            </td>
+                            <td>
+                                {{eleve.lieuNaissance}}
+
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Téléphone:</a>
+                            </td>
+                            <td>
+                                {{eleve.telephone}}
+
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Numero de Contact:</a>
+                            </td>
+                            <td>
+                                {{eleve.numeroContact}}
+
+                            </td>
+
+                        </tr>
+                    </table>
+                </ng-template>
+                <ng-template pTemplate>
+                    <table class="tableaudroite">
+                        <tr>
+                            <td>
+                                <a class="gauche">Classe:</a>
+                            </td>
+                            <td>
+                                {{eleve.classe.nom}}
+                            </td>
+
+                        </tr>
+                      <!--  <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Commune:</a>
+                            </td>
+                            <td>
+                                {{beneficiaire.commune}}
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Date de Naissance:</a>
+                            </td>
+                            <td>
+                                {{beneficiaire.dateNaissance  | date: 'dd/MM/yyyy'}}
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Date d'enregistrement:</a>
+                            </td>
+                            <td>
+                                {{beneficiaire.dateChargement | date: 'dd/MM/yyyy' }}
+                            </td>
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Téléphone:</a>
+                            </td>
+                            <td>
+                                {{beneficiaire.telephone}}
+                            </td>
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Date Délivrance Piece:</a>
+                            </td>
+                            <td>
+                                {{beneficiaire.dateDelivrancePiece | date: 'dd/MM/yyyy'}}
+
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Date d'expiration piece:</a>
+                            </td>
+                            <td>
+                                {{beneficiaire.dateExpirationPiece | date: 'dd/MM/yyyy'}}
+                            </td>
+
+                        </tr>
+                        <br>
+                        <tr>
+                            <td>
+                                <a class="gauche">Fichier:</a>
+                            </td>
+                            <td>
+                                {{beneficiaire.fileName}}
+                            </td>
+
+                        </tr>-->
+
+                    </table>
+                </ng-template>
+            </p-splitter>
+
+
+        </ng-template>
+        <div class="espace">
+
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Fermer" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+
         </ng-template>
     </p-dialog>
     <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

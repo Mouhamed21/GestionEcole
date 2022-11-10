@@ -1,10 +1,5 @@
 <p-toast></p-toast>
-<!--<div class="col-12">
-    <div class="card card-w-title">
-        <h5>Breadcrumb</h5>
-        <p-breadcrumb [model]="breadcrumbItems" [home]="{icon: 'pi pi-home'}"></p-breadcrumb>
-    </div>
-</div>-->
+
 <div class="card">
     <h5>Gestion des Classes</h5>
     <p-toolbar styleClass="mb-4">
@@ -35,9 +30,8 @@
                 <th style="width: 3rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-
-                <th pSortableColumn="nom">Nom <p-sortIcon field="nom"></p-sortIcon></th>
-
+                <th pSortableColumn="nom">Classe <p-sortIcon field="nom"></p-sortIcon></th>
+                <th pSortableColumn="niveau">Niveau <p-sortIcon field="niveau"></p-sortIcon></th>
                 <th>Actions</th>
 
             </tr>
@@ -48,6 +42,7 @@
                     <p-tableCheckbox [value]="classe"></p-tableCheckbox>
                 </td>
                 <td>{{classe.nom}}</td>
+                <td>{{classe.niveau.nom}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClasse(classe)" pTooltip="Modifier une classe" ></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteClasse(classe)" pTooltip="Supprimer une classe" ></button>
@@ -66,12 +61,21 @@
 
 </div>
 
-<p-dialog [(visible)]="classeDialog" [style]="{width: '450px'}" header="Ajout d'une Classe" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="classeDialog" [style]="{width: 'auto'}" header="Ajout d'une Classe" [modal]="true" styleClass="p-fluid" [closable]="false">
         <ng-template pTemplate="content">
-            <div class="p-field p-col">
+            <div class="field-col">
                 <label for="nom">Nom</label>
                 <input type="text" pInputText id="nom"  [(ngModel)]="classe.nom" required autofocus />
                 <small class="p-error" *ngIf="submitted && !classe.nom">Nom est obligatoire.</small>
+            </div>
+            <br>
+
+            <div class="field-col">
+                <label for="nom">Niveau</label>
+                <p-autoComplete appendTo="body" placeholder="Choisir un niveau" [dropdown]="true" [(ngModel)]="niveau"
+                                 [suggestions]="filteredNiveaux" [multiple]="false" [ngClass]="{'ng-invalid ng-dirty' : submitted && !niveau}"
+                                 (completeMethod)="filterNiveau($event)" id="niveau" field="nom"></p-autoComplete>
+                <small class="p-error" *ngIf="submitted && !niveau">Niveau est obligatoire.</small>
             </div>
 
         </ng-template>
@@ -79,9 +83,36 @@
 
         </div>
         <ng-template pTemplate="footer">
-            <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="postClasse()" ></button>
+            <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postClasse()" ></button>
         </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="editClasseDialog"  [style]="{width: 'auto'}" header="Modification d'une Classe" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field p-col">
+            <label for="nom">Nom</label>
+            <input type="text" pInputText id="nom"  [(ngModel)]="classe.nom" required autofocus />
+            <small class="p-error" *ngIf="submitted && !classe.nom">Nom est obligatoire.</small>
+        </div>
+        <br>
+
+        <div class="p-field p-col">
+            <label for="nom">Niveau</label>
+            <p-autoComplete appendTo="body"  [dropdown]="true" [(ngModel)]="classe.niveau"
+                            [suggestions]="filteredNiveau" [multiple]="false" required autofocus
+                            (completeMethod)="filterniveau($event)" id="niveau" field="nom"></p-autoComplete>
+<!--            <small class="p-error" *ngIf="submitted && !classe.niveau">Niveau est obligatoire.</small>-->
+        </div>
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postClasse()" ></button>
+    </ng-template>
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
