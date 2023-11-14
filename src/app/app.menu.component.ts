@@ -40,6 +40,7 @@ export class AppMenuComponent implements OnInit {
                     {label: 'Eleves', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/eleve']},
                     {label: 'Niveaux', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/niveau']},
                     {label: "Niveau D'Entree", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauEntre']},
+                    {label: "Niveau De Qualification Ciblé", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauQualificationCible']},
 
                  /*   {label: 'Matieres', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/matiere']},
                     {label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout']},
@@ -57,7 +58,7 @@ export class AppMenuComponent implements OnInit {
                     {label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file']}*/
                 ]
             },
-            {
+         /*   {
                 label:'Prime Blocks',
                 items:[
                     {label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW'},
@@ -135,7 +136,7 @@ export class AppMenuComponent implements OnInit {
                         label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
                     }
                 ]
-            }
+            }*/
         ];
     }
 

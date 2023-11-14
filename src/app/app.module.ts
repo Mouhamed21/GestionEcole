@@ -147,6 +147,7 @@ import { StatutComponent } from './components/statut/statut.component';
 import { NiveauComponent } from './components/niveau/niveau.component';
 import {MatiereComponent} from "./components/matiere/matiere.component";
 import { NiveauEntreComponentComponent } from './components/niveau-entre-component/niveau-entre-component.component';
+import { NiveauQualificationCibleComponentComponent } from './components/niveau-qualification-cible/niveau-qualification-cible.component';
 
 @NgModule({
     imports: [
@@ -287,6 +288,7 @@ import { NiveauEntreComponentComponent } from './components/niveau-entre-compone
         NiveauComponent,
         MatiereComponent,
         NiveauEntreComponentComponent,
+        NiveauQualificationCibleComponentComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

@@ -33,6 +33,10 @@ import {ClasseDetailComponent} from "./components/classe-detail/classe-detail.co
 import {NiveauComponent} from "./components/niveau/niveau.component";
 import {MatiereComponent} from "./components/matiere/matiere.component";
 import {NiveauEntreComponentComponent} from "./components/niveau-entre-component/niveau-entre-component.component";
+import {NiveauQualificationCible} from "./modele/niveauQualificationCible";
+import {
+    NiveauQualificationCibleComponentComponent
+} from "./components/./niveau-qualification-cible/niveau-qualification-cible.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -67,6 +71,7 @@ import {NiveauEntreComponentComponent} from "./components/niveau-entre-component
                     {path: 'uikit/eleve', component: EleveComponent},
                     {path: 'uikit/niveau', component: NiveauComponent},
                     {path: 'parametrage/niveauEntre', component: NiveauEntreComponentComponent},
+                    {path: 'parametrage/niveauQualificationCible', component: NiveauQualificationCibleComponentComponent},
                     {path: 'uikit/matiere', component: MatiereComponent}
                 ],
             },
