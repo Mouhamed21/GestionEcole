@@ -31,7 +31,6 @@ export class NiveauComponent implements OnInit {
 
   ngOnInit(): void {
         this.getNiveaux();
-
   }
     public getNiveaux(){
         console.log('On Init ...');
@@ -69,7 +68,7 @@ export class NiveauComponent implements OnInit {
         console.log(this.annee);
 
         console.log(this.niveau.nom)
-        console.log(this.niveau.annee)
+        //console.log(this.niveau.annee)
         //this.annee = {...niveau.annee}
         this.niveauDialog = true;
     }
@@ -77,9 +76,8 @@ export class NiveauComponent implements OnInit {
     public postNiveau() {
         this.submitted = true;
 
-        this.niveau.annee=this.annee.getFullYear().toString();
-        console.log(this.niveau.annee);
-
+        //this.niveau.annee=this.annee.getFullYear().toString();
+        //console.log(this.niveau.annee);
         //this.niveau.annee=this.annee.getFullYear();
 
         if (this.niveau.nom.trim()) {
@@ -98,21 +96,21 @@ export class NiveauComponent implements OnInit {
                 this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Mis à jour Niveau', life: 3000});
             }
             else {
-                this.niveau.annee=this.annee.getFullYear().toString();
+                //this.niveau.annee=this.annee.getFullYear().toString();
                 this.niveauService.postNiveau(this.niveau).subscribe( data =>
                 {
                     console.log(this.niveau);
                     this.niveauSubject.next();
                     this.niveauDialog = false;
                     this.getNiveaux();
-                    this.annee=null;
+                    //this.annee=null;
                 }),
                     this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Classe', life: 3000});
             }
 
             this.niveaux = [...this.niveaux];
             this.niveauDialog = false;
-            this.annee=null;
+           // this.annee=null;
             this.niveau = {};
         }
     }

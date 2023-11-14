@@ -1,11 +1,11 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h5>Gestion des Niveaux</h5>
+    <h5>Gestion des Matieres</h5>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedNiveaux()" [disabled]="!selectedNiveaux || !selectedNiveaux.length"></button>
+            <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()" ></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger"></button>
         </ng-template>
 
         <ng-template pTemplate="right">
@@ -13,12 +13,12 @@
             <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>
     </p-toolbar>
-    <p-table  #dt [value]="niveaux" [paginator]="true" [rows]="10"  [globalFilterFields]="['nom']" responsiveLayout="scroll"
-              [(selection)]="selectedNiveaux" [rowHover]="true" dataKey="id"
+    <p-table  #dt [value]="matieres" [paginator]="true" [rows]="10"  [globalFilterFields]="['nom']" responsiveLayout="scroll"
+              [rowHover]="true" dataKey="id"
               [rowsPerPageOptions]="[10,25,50]">
         <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                <h5 class="m-0">Liste des Niveaux</h5>
+                <h5 class="m-0">Liste des Matieres</h5>
                 <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
@@ -32,22 +32,22 @@
                 </th>
 
                 <th pSortableColumn="nom">Nom <p-sortIcon field="nom"></p-sortIcon></th>
-<!--                <th pSortableColumn="annee">Annee <p-sortIcon field="annee"></p-sortIcon></th>-->
+                <!--                <th pSortableColumn="annee">Annee <p-sortIcon field="annee"></p-sortIcon></th>-->
 
                 <th>Actions</th>
 
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-niveau>
+        <ng-template pTemplate="body" let-matiere>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="niveau"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="matiere"></p-tableCheckbox>
                 </td>
-                <td>{{niveau.nom}}</td>
-<!--                <td>{{niveau.annee}}</td>-->
+                <td>{{matiere.nom}}</td>
+                <!--                <td>{{niveau.annee}}</td>-->
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  pTooltip="Modifier une classe" (click)="editNiveau(niveau)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"  pTooltip="Supprimer une classe" (click)="deleteNiveau(niveau)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  pTooltip="Modifier une classe" (click)="editMatiere(matiere)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"  pTooltip="Supprimer une classe" ></button>
                 </td>
             </tr>
         </ng-template>
@@ -62,18 +62,18 @@
 
 </div>
 
-<p-dialog [(visible)]="niveauDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'un Niveau" [modal]="true" [closable]="false" styleClass="p-fluid">
+<p-dialog [(visible)]="matiereDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'une Matiere" [modal]="true" [closable]="false" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field p-col">
             <label for="nom">Nom</label>
-            <input type="text" pInputText id="nom"  [(ngModel)]="niveau.nom" required autofocus />
-            <small class="p-error" *ngIf="submitted && !niveau.nom">Nom est obligatoire.</small>
+            <input type="text" pInputText id="nom"  [(ngModel)]="matiere.nom" required autofocus />
+            <small class="p-error" *ngIf="submitted && !matiere.nom">Nom est obligatoire.</small>
         </div>
-<!--        <div class="p-field p-col">
-            <label for="annee">Annee</label>
-            <p-calendar appendTo="body" [(ngModel)]="annee" view="year" dateFormat="yy"></p-calendar>
-&lt;!&ndash;            <small class="p-error" *ngIf="submitted && !niveau.nom">Nom est obligatoire.</small>&ndash;&gt;
-        </div>-->
+        <!--        <div class="p-field p-col">
+                    <label for="annee">Annee</label>
+                    <p-calendar appendTo="body" [(ngModel)]="annee" view="year" dateFormat="yy"></p-calendar>
+        &lt;!&ndash;            <small class="p-error" *ngIf="submitted && !niveau.nom">Nom est obligatoire.</small>&ndash;&gt;
+                </div>-->
 
 
     </ng-template>
@@ -82,13 +82,14 @@
     </div>
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postNiveau()" ></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postMatiere()" ></button>
     </ng-template>
 </p-dialog>
 
 
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
 
 
 

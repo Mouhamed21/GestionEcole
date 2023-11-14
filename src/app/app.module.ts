@@ -103,7 +103,6 @@ import { FormLayoutComponent } from './components/formlayout/formlayout.componen
 import { FloatLabelComponent } from './components/floatlabel/floatlabel.component';
 import { InvalidStateComponent } from './components/invalidstate/invalidstate.component';
 import { InputComponent } from './components/input/input.component';
-import { ButtonComponent } from './components/button/button.component';
 import { TableComponent } from './components/table/table.component';
 import { ListComponent } from './components/list/list.component';
 import { TreeComponent } from './components/tree/tree.component';
@@ -146,6 +145,8 @@ import { ClasseDetailComponent } from './components/classe-detail/classe-detail.
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import { StatutComponent } from './components/statut/statut.component';
 import { NiveauComponent } from './components/niveau/niveau.component';
+import {MatiereComponent} from "./components/matiere/matiere.component";
+import { NiveauEntreComponentComponent } from './components/niveau-entre-component/niveau-entre-component.component';
 
 @NgModule({
     imports: [
@@ -251,7 +252,6 @@ import { NiveauComponent } from './components/niveau/niveau.component';
         FloatLabelComponent,
         InvalidStateComponent,
         InputComponent,
-        ButtonComponent,
         TableComponent,
         ListComponent,
         TreeComponent,
@@ -285,6 +285,8 @@ import { NiveauComponent } from './components/niveau/niveau.component';
         ClasseDetailComponent,
         StatutComponent,
         NiveauComponent,
+        MatiereComponent,
+        NiveauEntreComponentComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

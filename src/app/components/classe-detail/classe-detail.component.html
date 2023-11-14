@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h5>Gestion Eleve</h5>
+    <h5>Gestion Eleve </h5>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewest()"></button>
@@ -109,11 +109,14 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="telephone">Telephone</label>
-                <p-inputNumber id="telephone" [(ngModel)]="eleve.telephone" placeholder="77 747 87 99" ></p-inputNumber>
+                <p-inputMask mask="99 999-99-99" id="telephone" [(ngModel)]="eleve.telephone" placeholder="77 777-66-77"></p-inputMask>
+<!--                <p-inputNumber id="telephone" [(ngModel)]="eleve.telephone" placeholder="77 747 87 99" ></p-inputNumber>-->
             </div>
             <div class="field col">
                 <label for="numeroContact">Numero Tuteur</label>
-                <p-inputNumber id="numeroContact" [(ngModel)]="eleve.numeroContact" placeholder="77 747 87 99"></p-inputNumber>
+                <p-inputMask mask="99 999-99-99" id="numeroContact" [(ngModel)]="eleve.numeroContact" placeholder="77 777-66-77"></p-inputMask>
+
+<!--                <p-inputNumber id="numeroContact" [(ngModel)]="eleve.numeroContact" placeholder="77 747 87 99"></p-inputNumber>-->
             </div>
         </div>
         <div class="formgrid grid">
@@ -144,8 +147,8 @@
     <div class="espace">
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Enregistrer"  icon="pi pi-check" class="p-button-text"  (click)="postEleve()" ></button>
+        <button pButton pRipple class="p-button-danger" label="Annuler" icon="pi pi-times" (click)="hideDialog()"></button>
+        <button pButton pRipple class="p-button-success" label="Enregistrer"  icon="pi pi-check"  (click)="postEleve()" ></button>
     </ng-template>
 </p-dialog>
 

@@ -14,58 +14,90 @@ import {Classe} from "../../modele/classe";
 })
 export class EleveComponent implements OnInit {
     eleves: any;
-    classe:Classe;
-    classes:any;
-    id:number;
+    classe: Classe;
+    classes: any;
+    id: number;
     eleve: Eleve;
     submitted: boolean;
     eleveDialog: boolean;
     validerEmail: boolean;
     filteredClasse: Classe[];
     filteredClasses: Classe[];
-    eleveDialog2:boolean;
+    eleveDialog2: boolean;
     selectedEleves: any;
-    nbrEleves:any;
-    dateJour:Date = new Date();
-    detailDialog:boolean;
-  constructor(private classeService: ClasseService, private eleveService: EleveService, private router: Router,
-              private messageService: MessageService, private confirmationService: ConfirmationService ) { }
+    nbrEleves: any;
+    nbrElevesClasse: any;
+    dateJour: Date = new Date();
+    detailDialog: boolean;
 
-  ngOnInit(): void {
-      this.getEleves();
-      this.getClasses();
-      this.getEffectifEcole();
-       this.eleveService.getElevesByClasse(this.id).subscribe((data) =>
-      {
-          this.eleves = data;
-          console.log(this.eleves);
-      })
-  }
+    constructor(private classeService: ClasseService, private eleveService: EleveService, private router: Router,
+                private messageService: MessageService, private confirmationService: ConfirmationService) {
+    }
+
+    ngOnInit(): void {
+        this.getEleves();
+        this.getClasses();
+        this.getEffectifEcole();
+/*        this.eleveService.getElevesByClasse(this.id).subscribe((data) => {
+            this.eleves = data;
+            console.log(this.eleves);
+        })*/
+    }
+
     updatedate(event) {
         this.eleve.dateNaissance = new Date(event);
     }
-    public getClasses(){
+
+    public getClasses() {
         console.log('On Init ...');
-        return this.classeService.getClasses().subscribe((data) =>
-        {
+        return this.classeService.getClasses().subscribe((data) => {
             console.log(data);
             this.classes = data;
         })
     }
-    public getEffectifEcole(){
-        return this.eleveService.getEffectifEcole().subscribe((data) =>
+
+    public getEffectifClasse(classeId){
+        return this.eleveService.getEffectifClasse(classeId).subscribe((data) =>
         {
+            this.nbrElevesClasse = data;
+            console.log(this.nbrElevesClasse);
+        })
+    }
+
+    public getElevesByClasse(classeId){
+        //console.log(this.classe.id)
+        return this.eleveService.getElevesByClasse(classeId).subscribe((data) =>
+        {
+            this.eleves = data;
+            console.log(this.eleves);
+            this.getEffectifClasse(classeId);
+        })
+    }
+
+    public getEffectifEcole() {
+        return this.eleveService.getEffectifEcole().subscribe((data) => {
             this.nbrEleves = data;
             console.log(this.nbrEleves);
         })
     }
 
-    public getEleves(){
-      this.eleveService.getEleves().subscribe(data => this.eleves = data);
-  }
+
+
+    public getEleves() {
+        this.eleveService.getEleves().subscribe(data => {
+                this.eleves = data
+                console.log(this.eleves)
+                this.classe=null;
+        }
+
+
+        );
+    }
+
     first = 0;
 
     rows = 10;
+
     editEleve(eleve: Eleve) {
         this.eleve = {...eleve};
         this.eleveDialog2 = true;
@@ -73,31 +105,35 @@ export class EleveComponent implements OnInit {
 
     public postEleve() {
         console.log(this.classe);
-        if (this.isValidEmail(this.eleve.email) === false){
+        if (this.isValidEmail(this.eleve.email) === false) {
 
-            this.validerEmail=false;
-            if (this.eleve.email){
-                this.validerEmail=false;
-                this.messageService.add({severity:'error', summary: 'Echéc', detail: "L'Email n'est pas valide", life: 3000});
+            this.validerEmail = false;
+            if (this.eleve.email) {
+                this.validerEmail = false;
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Echéc',
+                    detail: "L'Email n'est pas valide",
+                    life: 3000
+                });
             }
 
-        }
-        else {
+        } else {
 
-            this.validerEmail=true;
+            this.validerEmail = true;
 
         }
         console.log(this.eleve);
         this.submitted = true;
         //debugger
-        if (this.validerEmail == true || !this.eleve.email){
+        if (this.validerEmail == true || !this.eleve.email) {
             if (this.eleve.prenom.trim() && this.eleve.nom.trim() && this.eleve.dateNaissance.toString().trim() && this.eleve.lieuNaissance.trim()
                 && this.eleve.adresse.trim()) {
                 if (this.eleve.id) {
-                   // this.eleve.classe = this.eleve.classe;
+                    // this.eleve.classe = this.eleve.classe;
                     console.log(this.eleve);
 
-                    this.eleveService.updateEleve(this.eleve.id,this.eleve).subscribe(
+                    this.eleveService.updateEleve(this.eleve.id, this.eleve).subscribe(
                         data => {
                             console.log(data);
                             //this.editEleveDialog = false;
@@ -108,16 +144,19 @@ export class EleveComponent implements OnInit {
                             console.log(error);
                         }
                     );
-                    this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Mise à jour Eleve avec succé', life: 3000});
-                }
-                else {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Réussi',
+                        detail: 'Mise à jour Eleve avec succé',
+                        life: 3000
+                    });
+                } else {
 
                     console.log(this.classe);
                     this.eleve.classe = this.classe;
                     console.log(this.eleve);
                     console.log(this.classe);
-                    this.eleveService.postEleve(this.eleve).subscribe( data =>
-                        {
+                    this.eleveService.postEleve(this.eleve).subscribe(data => {
 
                             this.eleve = {};
                             //this.classe=null;
@@ -130,13 +169,18 @@ export class EleveComponent implements OnInit {
 
                         });
                     console.log(this.classe);
-                    this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Eleve', life: 3000});
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Réussi',
+                        detail: 'Ajout Eleve',
+                        life: 3000
+                    });
                 }
 
                 this.eleves = [...this.eleves];
                 this.eleveDialog = false;
                 this.eleveDialog2 = false;
-                this.classe=null;
+                this.classe = null;
                 this.eleve = {};
                 console.log(this.eleve);
             }
@@ -150,13 +194,15 @@ export class EleveComponent implements OnInit {
         this.submitted = false;
         this.eleveDialog = true;
     }
+
     hideDialog() {
         this.eleveDialog = false;
         this.eleveDialog2 = false;
         this.submitted = false;
-        this.classe=null;
-        this.detailDialog=false;
+        this.classe = null;
+        this.detailDialog = false;
     }
+
     filterclasse(event) {
         const filtered: Classe[] = [];
         const query = event.query;
@@ -168,6 +214,7 @@ export class EleveComponent implements OnInit {
         }
         this.filteredClasse = filtered;
     }
+
     filterClasse(event) {
         const filter: Classe[] = [];
         const query = event.query;
@@ -179,17 +226,17 @@ export class EleveComponent implements OnInit {
         }
         this.filteredClasses = filter;
     }
-    deleteEleve(eleve: Eleve){
+
+    deleteEleve(eleve: Eleve) {
         this.confirmationService.confirm({
-            message: 'Etes-vous sûr de vouloir supprimer ' + eleve.prenom + ' ' +eleve.nom +' ?',
+            message: 'Etes-vous sûr de vouloir supprimer ' + eleve.prenom + ' ' + eleve.nom + ' ?',
             header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Oui',
             rejectLabel: 'Non',
             accept: () => {
                 this.eleves = this.eleves.filter(val => val.id !== eleve.id);
-                this.eleveService.deleteEleve(eleve.id).subscribe(data =>
-                    {
+                this.eleveService.deleteEleve(eleve.id).subscribe(data => {
                         this.getEleves();
                         this.getEffectifEcole();
                     },
@@ -200,7 +247,7 @@ export class EleveComponent implements OnInit {
 
 
                 this.eleve = {};
-                this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Eleve Supprimé', life: 3000});
+                this.messageService.add({severity: 'success', summary: 'Réussi', detail: 'Eleve Supprimé', life: 3000});
 
             }
 
@@ -208,6 +255,7 @@ export class EleveComponent implements OnInit {
 
 
     }
+
     deleteSelectedEleves() {
         this.confirmationService.confirm({
             message: 'Êtes-vous sûr de vouloir supprimer les eleves sélectionnés',
@@ -218,8 +266,7 @@ export class EleveComponent implements OnInit {
             accept: () => {
                 this.eleves = this.eleves.filter(val => !this.selectedEleves.includes(val));
                 console.log(this.selectedEleves);
-                this.eleveService.deleteAllEleves(this.selectedEleves).subscribe(data =>
-                    {
+                this.eleveService.deleteAllEleves(this.selectedEleves).subscribe(data => {
                         this.getEleves();
                         this.getEffectifEcole();
                     },
@@ -228,7 +275,12 @@ export class EleveComponent implements OnInit {
                     }
                 );
                 this.selectedEleves = null;
-                this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Eleve(s) Supprimé(s)', life: 3000});
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Réussi',
+                    detail: 'Eleve(s) Supprimé(s)',
+                    life: 3000
+                });
                 this.getEleves();
                 this.getEffectifEcole();
             }
@@ -244,7 +296,7 @@ export class EleveComponent implements OnInit {
     }
 
     isLastPage(): boolean {
-        return this.eleves ? this.first === (this.eleves.length - this.rows): true;
+        return this.eleves ? this.first === (this.eleves.length - this.rows) : true;
     }
 
     isFirstPage(): boolean {
@@ -261,9 +313,10 @@ export class EleveComponent implements OnInit {
             return false;
         }
     }
-    getDetailEleve(eleve: Eleve){
+
+    getDetailEleve(eleve: Eleve) {
         this.eleve = {...eleve};
-        this.detailDialog=true;
+        this.detailDialog = true;
     }
 
 }

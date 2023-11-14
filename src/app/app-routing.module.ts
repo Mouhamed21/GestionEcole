@@ -13,7 +13,6 @@ import { FileComponent } from './components/file/file.component';
 import { DocumentationComponent } from './components/documentation/documentation.component';
 import { AppMainComponent } from './app.main.component';
 import { InputComponent } from './components/input/input.component';
-import { ButtonComponent } from './components/button/button.component';
 import { TableComponent } from './components/table/table.component';
 import { ListComponent } from './components/list/list.component';
 import { TreeComponent } from './components/tree/tree.component';
@@ -32,6 +31,8 @@ import {ClasseComponent} from "./components/classe/classe.component";
 import {EleveComponent} from "./components/eleve/eleve.component";
 import {ClasseDetailComponent} from "./components/classe-detail/classe-detail.component";
 import {NiveauComponent} from "./components/niveau/niveau.component";
+import {MatiereComponent} from "./components/matiere/matiere.component";
+import {NiveauEntreComponentComponent} from "./components/niveau-entre-component/niveau-entre-component.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -44,7 +45,6 @@ import {NiveauComponent} from "./components/niveau/niveau.component";
                     {path: 'uikit/input', component: InputComponent},
                     {path: 'uikit/floatlabel', component: FloatLabelComponent},
                     {path: 'uikit/invalidstate', component: InvalidStateComponent},
-                    {path: 'uikit/button', component: ButtonComponent},
                     {path: 'uikit/table', component: TableComponent},
                     {path: 'uikit/list', component: ListComponent},
                     {path: 'uikit/tree', component: TreeComponent},
@@ -65,7 +65,9 @@ import {NiveauComponent} from "./components/niveau/niveau.component";
                     {path: 'uikit/classe', component: ClasseComponent},
                     {path: 'uikit/classe/:id', component: ClasseDetailComponent},
                     {path: 'uikit/eleve', component: EleveComponent},
-                    {path: 'uikit/niveau', component: NiveauComponent}
+                    {path: 'uikit/niveau', component: NiveauComponent},
+                    {path: 'parametrage/niveauEntre', component: NiveauEntreComponentComponent},
+                    {path: 'uikit/matiere', component: MatiereComponent}
                 ],
             },
             {path:'pages/landing', component: LandingComponent},

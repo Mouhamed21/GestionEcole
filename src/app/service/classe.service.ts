@@ -10,6 +10,9 @@ import {environment} from "../../environments/environment";
 export class ClasseService {
 
     baseUrl = environment.urlApi + '/classe';
+    baseUrl1 = environment.urlApi + '/classe/niveau';
+    baseUrl2 = environment.urlApi + '/classe/effectifClasses';
+    baseUrl3 = environment.urlApi + '/classe/nbrclasseparniveau';
     constructor(private httpClient: HttpClient) {
     }
 
@@ -19,7 +22,16 @@ export class ClasseService {
     getClasseById(id:number) {
         return this.httpClient.get(`${this.baseUrl}/${id}`);
     }
+    getEffectifClasses(){
+        return this.httpClient.get(`${this.baseUrl2}`);
+    }
+    getNombreClasseParNiveau(id:number){
+        return this.httpClient.get(`${this.baseUrl3}/${id}`);
+    }
 
+    getClasseByNiveau(id:number){
+        return this.httpClient.get(`${this.baseUrl1}/${id}`);
+    }
     postClasse(classe: Classe) {
         return this.httpClient.post(`${this.baseUrl}`, classe)
     }

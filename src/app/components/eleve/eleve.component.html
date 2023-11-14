@@ -18,7 +18,19 @@
              [rowsPerPageOptions]="[10,25,50]">
         <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                <h5>Effectif:  <p-badge value="{{ nbrEleves }}" size="large" severity="info"></p-badge></h5>
+                <h5  class="effectif" *ngIf="!classe">Effectif Total: <p-badge value="{{ nbrEleves }}" size="large" severity="info"></p-badge></h5>
+                <h5 class="effectif" *ngIf="classe">Effectif {{classe.nom}}:  <p-badge value="{{ nbrElevesClasse }}" size="large" severity="info"></p-badge></h5>
+                <p-autoComplete appendTo="body"  readonly="false" placeholder="Choisissez une classe"  [dropdown]="true" [(ngModel)]="classe"
+                                (onSelect)="getElevesByClasse(classe.id)"  showClear="true"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !classe}"
+                                [suggestions]="filteredClasses" showEmptyMessage="Liste des classes vides"
+                                (completeMethod)="filterClasse($event)"  field="nom"></p-autoComplete>
+                <button *ngIf="classe" pButton pRipple label="TOUS LES ELEVES"  class="p-button-primary" icon="pi pi-check"
+                        (click)="getEleves()"  ></button>
+                <h5 *ngIf="classe==null"></h5>
+
+                <!--                <p-dropdown [options]="classes" [(ngModel)]="classe" placeholder="Choisisser une classe" optionLabel="nom" emptyMessage="Listes Vides"
+                                            (onChange)="getElevesByClasse(classe.id)" [showClear]="true" ></p-dropdown>-->
                 <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
@@ -108,9 +120,7 @@
             </div>
             <div class="field col">
                 <label for="nom">Classe</label>
-<!--                <p-dropdown *ngIf="!eleve.id" [options]="classes" [(ngModel)]="classe" optionLabel="nom" ></p-dropdown>-->
-<!--                <p-dropdown *ngIf="eleve.id" [options]="classes" [(ngModel)]="classe" optionLabel="nom" editable="true" ></p-dropdown>-->
-                <p-autoComplete appendTo="body"  placeholder="Choisissez une classe"  [dropdown]="true" [(ngModel)]="classe" required autofocus showClear="true"
+                 <p-autoComplete appendTo="body" readonly="true" placeholder="Choisissez une classe"  [dropdown]="true" [(ngModel)]="classe" required autofocus showClear="true"
                                  [ngClass]="{'ng-invalid ng-dirty' : submitted && !classe}"
                                 [suggestions]="filteredClasses" showEmptyMessage="Liste des classes vides"
                                 (completeMethod)="filterClasse($event)"  field="nom"></p-autoComplete>
@@ -194,7 +204,7 @@
             </div>
             <div class="field col">
                 <label for="nom">Classe</label>
-                <p-autoComplete appendTo="body" [dropdown]="true" [(ngModel)]="eleve.classe"
+                <p-autoComplete appendTo="body" readonly="true" [dropdown]="true" [(ngModel)]="eleve.classe"
                                 [suggestions]="filteredClasse" [multiple]="false"
                                 (completeMethod)="filterclasse($event)" id="classe" field="nom"></p-autoComplete>
             </div>

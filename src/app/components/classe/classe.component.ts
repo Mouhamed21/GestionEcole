@@ -45,6 +45,9 @@ export class ClasseComponent implements OnInit {
     niveau:Niveau;
     filteredNiveaux: Niveau[];
     filteredNiveau: Niveau[];
+    nbrClasse:any;
+    nbrClasseparNiveau:any;
+
     constructor(private classeService: ClasseService, private eleveService: EleveService, private niveauService:NiveauService, private router: Router,
                 private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -52,6 +55,9 @@ export class ClasseComponent implements OnInit {
         this.getClasses();
 
         this.getNiveaux();
+
+        this.getEffectifClasses();
+
 
         this.eleveService.getEleves().subscribe(data => this.eleves = data);
     }
@@ -63,6 +69,31 @@ export class ClasseComponent implements OnInit {
             console.log(data);
             this.classes = data;
             this.isLoading = true;
+            this.niveau = null;
+        })
+    }
+
+    public getEffectifClasses(){
+        return this.classeService.getEffectifClasses().subscribe( data =>
+        {
+            this.nbrClasse = data;
+            console.log(this.nbrClasse);
+        })
+    }
+
+    public getNombreClasseParNiveau(niveauId){
+        return this.classeService.getNombreClasseParNiveau(niveauId).subscribe(data =>
+        {
+            this.nbrClasseparNiveau = data;
+            console.log(this.nbrClasseparNiveau)
+        })
+    }
+
+    public getClassesByNiveau(niveauId){
+        return this.classeService.getClasseByNiveau(niveauId).subscribe(data =>{
+            this.classes = data;
+            console.log(this.classes);
+            this.getNombreClasseParNiveau(niveauId);
         })
     }
     public getOneClasse(classe: Classe){

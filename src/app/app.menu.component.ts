@@ -34,16 +34,18 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'UI Components',
+                label: 'Parametrage',
                 items: [
                     {label: 'Classes', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/classe']},
                     {label: 'Eleves', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/eleve']},
                     {label: 'Niveaux', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/niveau']},
+                    {label: "Niveau D'Entree", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauEntre']},
+
+                 /*   {label: 'Matieres', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/matiere']},
                     {label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout']},
                     {label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input']},
                     {label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel']},
                     {label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate']},
-                    {label: 'Button', icon: 'pi pi-fw pi-mobile', routerLink: ['/uikit/button'], class: 'rotated-icon'},
                     {label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table']},
                     {label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list']},
                     {label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree']},
@@ -52,7 +54,7 @@ export class AppMenuComponent implements OnInit {
                     {label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media']},
                     {label: 'Menu', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'], preventExact: true},
                     {label: 'Message', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message']},
-                    {label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file']}
+                    {label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file']}*/
                 ]
             },
             {
