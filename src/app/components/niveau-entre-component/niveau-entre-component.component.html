@@ -14,9 +14,22 @@
             <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>-->
     </p-toolbar>
+    <div *ngIf="loading==true">
+        <h5 class="spinner">Veuillez Patienter...</h5>
+        <p-progressSpinner class="spinner"></p-progressSpinner>
+    </div>
+    <div *ngIf="erreur==true && loading==false" class="alert alert-danger" >
+        Serveur Indisponible
+    </div>
+    <p-table *ngIf="!tableau">
+        <ng-template pTemplate="header">
+            <p class="vides">La liste des Niveaux d'entrée est vide</p>
+        </ng-template>
+
+    </p-table>
     <p-table  #dt [value]="niveauEntres" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
               [(selection)]="selectedNiveaux" [rowHover]="true" dataKey="id"
-              [rowsPerPageOptions]="[10,25,50]">
+              [rowsPerPageOptions]="[10,25,50]" *ngIf="tableau">
         <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                 <h5 class="m-0">Liste des Niveaux d'entrée</h5>
@@ -33,8 +46,6 @@
                 </th>
 
                 <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
-                <!--<th pSortableColumn="annee">Annee <p-sortIcon field="annee"></p-sortIcon></th>-->
-
                 <th>Actions</th>
 
             </tr>
@@ -45,7 +56,6 @@
                     <p-tableCheckbox [value]="niveauEntre"></p-tableCheckbox>
                 </td>
                 <td>{{niveauEntre.libelle}}</td>
-                <!--                <td>{{niveau.annee}}</td>-->
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  pTooltip="Modifier une classe" (click)="editNiveauEntre(niveauEntre)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"  pTooltip="Supprimer une classe" (click)="deleteNiveauEntre(niveauEntre)"></button>

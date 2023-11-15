@@ -12,9 +12,9 @@ import { AppMainComponent } from './app.main.component';
                         <li app-menuitem *ngFor="let child of item.items" [item]="child" [index]="i" role="none"></li>
                     </ul>
                 </li>
-                <a href="https://www.primefaces.org/primeblocks-ng/#/">
+<!--                <a href="https://www.primefaces.org/primeblocks-ng/#/">
                     <img src="assets/layout/images/{{appMain.config.dark ? 'banner-primeblocks-dark' : 'banner-primeblocks'}}.png" alt="Prime Blocks" class="w-full mt-3"/>
-                </a>
+                </a>-->
             </ul>
         </div>
     `
@@ -30,15 +30,16 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Home',
                 items:[
-                    {label: 'Dashboard',icon: 'pi pi-fw pi-home', routerLink: ['/']}
+                    {label: 'Accueil',icon: 'pi pi-fw pi-home', routerLink: ['/']}
                 ]
             },
             {
                 label: 'Parametrage',
                 items: [
-                    {label: 'Classes', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/classe']},
+/*                    {label: 'Classes', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/classe']},
                     {label: 'Eleves', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/eleve']},
-                    {label: 'Niveaux', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/niveau']},
+                    {label: 'Niveaux', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/niveau']},*/
+                    {label: "Centre Reference", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/centreReference']},
                     {label: "Niveau D'Entree", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauEntre']},
                     {label: "Niveau De Qualification Ciblé", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauQualificationCible']},
 

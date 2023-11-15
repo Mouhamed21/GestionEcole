@@ -1,12 +1,12 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h5>Gestion des Niveaux de Qualification Ciblé</h5>
+    <h5>Gestion des Centres de Références</h5>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Ajouter un Niveau" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedNiveauQualificationCibles()"
-                    [disabled]="!selectedNiveaux || !selectedNiveaux.length"></button>
+            <button pButton pRipple label="Ajouter un Centre De Référence" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedCentreReference()"
+                    [disabled]="!selectedCCentreReferences || !selectedCCentreReferences.length"></button>
         </ng-template>
 
         <!--        <ng-template pTemplate="right">
@@ -14,7 +14,6 @@
                     <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
                 </ng-template>-->
     </p-toolbar>
-
     <div *ngIf="loading==true">
         <h5 class="spinner">Veuillez Patienter...</h5>
         <p-progressSpinner class="spinner"></p-progressSpinner>
@@ -24,16 +23,16 @@
     </div>
     <p-table *ngIf="!tableau">
         <ng-template pTemplate="header">
-            <p class="vides">La liste des Niveaux de qualification ciblé est vide</p>
+            <p class="vides">La liste des Niveaux d'entrée est vide</p>
         </ng-template>
 
     </p-table>
-    <p-table  #dt [value]="niveauQualificationCibles" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
-              [(selection)]="selectedNiveaux" [rowHover]="true" dataKey="id"
+    <p-table  #dt [value]="centreReferences" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
+              [(selection)]="selectedCCentreReferences" [rowHover]="true" dataKey="id"
               [rowsPerPageOptions]="[10,25,50]" *ngIf="tableau">
         <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                <h5 class="m-0">Liste des Niveaux de Qualification ciblé</h5>
+                <h5 class="m-0">Liste des Centres de Référence</h5>
                 <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
@@ -47,20 +46,19 @@
                 </th>
 
                 <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
-
                 <th>Actions</th>
 
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-niveauQualificationCible>
+        <ng-template pTemplate="body" let-centreReference>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="niveauQualificationCible"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="centreReference"></p-tableCheckbox>
                 </td>
-                <td>{{niveauQualificationCible.libelle}}</td>
+                <td>{{centreReference.libelle}}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  pTooltip="Modifier une classe" (click)="editNiveauQualificationCible(niveauQualificationCible)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"  pTooltip="Supprimer une classe" (click)="deleteNiveauQualificationCible(niveauQualificationCible)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  pTooltip="Modifier un centre de Référence" (click)="editCentreReference(centreReference)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"  pTooltip="Supprimer un centre de Référence" (click)="deleteCentreReference(centreReference)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -74,12 +72,15 @@
     </p-table>
 
 </div>
-<p-dialog [(visible)]="niveauQualificationCibleDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'un Niveau" [modal]="true" [closable]="false" styleClass="p-fluid">
+
+
+
+<p-dialog [(visible)]="centreReferenceDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'un Centre de Référence" [modal]="true" [closable]="false" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field p-col">
             <label for="libelle">Libelle</label>
-            <input type="text" pInputText id="libelle"  [(ngModel)]="niveauQualificationCible.libelle" required autofocus />
-            <small class="p-error" *ngIf="submitted && !niveauQualificationCible.libelle">Libelle est obligatoire.</small>
+            <input type="text" pInputText id="libelle"  [(ngModel)]="centreReference.libelle" required autofocus />
+            <small class="p-error" *ngIf="submitted && !centreReference.libelle">Libelle est obligatoire.</small>
         </div>
         <!--        <div class="p-field p-col">
                     <label for="annee">Annee</label>
@@ -94,10 +95,11 @@
     </div>
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postNiveauQualificationCible()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postCentreReference()" ></button>
     </ng-template>
 </p-dialog>
 
 
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+

@@ -4,8 +4,6 @@ import {EleveService} from "../../service/eleve.service";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NiveauEntreService} from "../../service/niveau-entre.service";
-import {Niveau} from "../../modele/niveau";
-import {NiveauService} from "../../service/niveau.service";
 
 @Component({
   selector: 'app-niveau-entre-component',
@@ -20,6 +18,9 @@ export class NiveauEntreComponentComponent implements OnInit {
     submitted: boolean;
     niveauEntreDialog: boolean;
     editNiveauEntreDialog: boolean;
+    loading:boolean;
+    erreur:boolean;
+    tableau:boolean;
     constructor(private niveauEntreService: NiveauEntreService, private eleveService: EleveService, private router: Router,
                 private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -28,13 +29,24 @@ export class NiveauEntreComponentComponent implements OnInit {
   }
     public getAllNiveauEntre(){
         console.log('On Init ...');
+        this.tableau=true;
         return this.niveauEntreService.getAllNiveauEntre().subscribe((data) =>
         {
             console.log(data);
             this.niveauEntres = data;
+            if (this.niveauEntres.length==0){
+                this.tableau=false;
+            }
             console.log(this.niveauEntres);
             //this.isLoading = true;
-        })
+            this.loading=false;
+            this.erreur=false;
+        },
+            error => {
+                this.loading=false;
+                this.erreur=true;
+            }
+            )
     }
 
     openNew() {
@@ -62,12 +74,14 @@ export class NiveauEntreComponentComponent implements OnInit {
                         this.niveauEntreDialog = false;
                         this.niveauEntre = {};
                         this.getAllNiveauEntre();
+                        this.messageService.add({severity:'success', summary: 'Réussi', detail: "Mis à jour Niveau d'entrée", life: 3000});
                     },
                     error => {
                         console.log(error);
+                        this.messageService.add({severity:'error', summary: 'Echec', detail: 'Vous ne pouvez pas ajouter un niveau existant', life: 6000});
                     }
                 );
-                this.messageService.add({severity:'success', summary: 'Réussi', detail: "Mis à jour Niveau d'entrée", life: 3000});
+
             }
             else {
                 //this.niveau.annee=this.annee.getFullYear().toString();
@@ -77,9 +91,14 @@ export class NiveauEntreComponentComponent implements OnInit {
                     //this.niveauSubject.next();
                     this.niveauEntreDialog = false;
                     this.getAllNiveauEntre();
+                    this.messageService.add({severity:'success', summary: 'Réussi', detail: "Ajout Niveau d'entrée", life: 3000});
                     //this.annee=null;
-                }),
-                    this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Classe', life: 3000});
+                },
+                    error => {
+                        console.log(error);
+                        this.messageService.add({severity:'error', summary: 'Echec', detail: 'Vous ne pouvez pas ajouter un niveau existant', life: 6000});
+                    }
+                )
             }
 
             this.niveauEntres = [...this.niveauEntres];

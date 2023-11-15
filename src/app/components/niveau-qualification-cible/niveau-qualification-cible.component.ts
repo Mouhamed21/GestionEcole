@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {NiveauEntreService} from "../../service/niveau-entre.service";
 import {EleveService} from "../../service/eleve.service";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NiveauQualificationCibleService} from "../../service/niveau-qualification-cible.service";
-import {NiveauEntre} from "../../modele/niveauEntre";
 import {NiveauQualificationCible} from "../../modele/niveauQualificationCible";
 
 @Component({
@@ -20,6 +18,9 @@ export class NiveauQualificationCibleComponentComponent implements OnInit {
     submitted: boolean;
     niveauQualificationCibleDialog: boolean;
     editQualificationCibleEntreDialog: boolean;
+    loading:boolean;
+    erreur:boolean;
+    tableau:boolean;
     constructor(private niveauQualificationCibleService: NiveauQualificationCibleService, private eleveService: EleveService, private router: Router,
                 private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -28,13 +29,25 @@ export class NiveauQualificationCibleComponentComponent implements OnInit {
   }
     public getAllNiveauQualificationCible(){
         console.log('On Init ...');
+        this.loading=true;
+        this.tableau=true;
         return this.niveauQualificationCibleService.getAllNiveauQualificationCible().subscribe((data) =>
         {
             console.log(data);
             this.niveauQualificationCibles = data;
+            if (this.niveauQualificationCibles.length==0){
+                this.tableau=false;
+            }
             console.log(this.niveauQualificationCibles);
+            this.loading=false;
+            this.erreur=false;
             //this.isLoading = true;
-        })
+        },
+            error => {
+                this.loading=false;
+                this.erreur=true;
+            }
+        )
     }
 
     openNew() {
@@ -62,12 +75,13 @@ export class NiveauQualificationCibleComponentComponent implements OnInit {
                         this.niveauQualificationCibleDialog = false;
                         this.niveauQualificationCible = {};
                         this.getAllNiveauQualificationCible();
+                        this.messageService.add({severity:'success', summary: 'Réussi', detail: "Mis à jour Niveau de Qualification Ciblé", life: 3000});
                     },
                     error => {
                         console.log(error);
+                        this.messageService.add({severity:'error', summary: 'Echec', detail: 'Vous ne pouvez pas ajouter un niveau existant', life: 6000});
                     }
                 );
-                this.messageService.add({severity:'success', summary: 'Réussi', detail: "Mis à jour Niveau de Qualification Ciblé", life: 3000});
             }
             else {
                 //this.niveau.annee=this.annee.getFullYear().toString();
@@ -77,9 +91,15 @@ export class NiveauQualificationCibleComponentComponent implements OnInit {
                     //this.niveauSubject.next();
                     this.niveauQualificationCibleDialog = false;
                     this.getAllNiveauQualificationCible();
-                    //this.annee=null;
-                }),
                     this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Niveau de Qualification', life: 3000});
+                    //this.annee=null;
+                },
+                    error => {
+                        console.log(error);
+                        this.messageService.add({severity:'error', summary: 'Echec', detail: 'Vous ne pouvez pas ajouter un niveau existant', life: 6000});
+                    }
+                )
+
             }
 
             this.niveauQualificationCibles = [...this.niveauQualificationCibles];

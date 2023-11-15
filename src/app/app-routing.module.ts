@@ -37,6 +37,7 @@ import {NiveauQualificationCible} from "./modele/niveauQualificationCible";
 import {
     NiveauQualificationCibleComponentComponent
 } from "./components/./niveau-qualification-cible/niveau-qualification-cible.component";
+import {CentreReferenceComponent} from "./components/centre-reference/centre-reference.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -72,6 +73,7 @@ import {
                     {path: 'uikit/niveau', component: NiveauComponent},
                     {path: 'parametrage/niveauEntre', component: NiveauEntreComponentComponent},
                     {path: 'parametrage/niveauQualificationCible', component: NiveauQualificationCibleComponentComponent},
+                    {path: 'parametrage/centreReference', component: CentreReferenceComponent},
                     {path: 'uikit/matiere', component: MatiereComponent}
                 ],
             },
