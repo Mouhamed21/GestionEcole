@@ -149,6 +149,9 @@ import {MatiereComponent} from "./components/matiere/matiere.component";
 import { NiveauEntreComponentComponent } from './components/niveau-entre-component/niveau-entre-component.component';
 import { NiveauQualificationCibleComponentComponent } from './components/niveau-qualification-cible/niveau-qualification-cible.component';
 import { CentreReferenceComponent } from './components/centre-reference/centre-reference.component';
+import { EntrepriseFormatriceComponent } from './components/entreprise-formatrice/entreprise-formatrice.component';
+import { SecteurComponent } from './components/secteur/secteur.component';
+import { BrancheComponent } from './components/branche/branche.component';
 
 @NgModule({
     imports: [
@@ -291,6 +294,9 @@ import { CentreReferenceComponent } from './components/centre-reference/centre-r
         NiveauEntreComponentComponent,
         NiveauQualificationCibleComponentComponent,
         CentreReferenceComponent,
+        EntrepriseFormatriceComponent,
+        SecteurComponent,
+        BrancheComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

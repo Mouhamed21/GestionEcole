@@ -38,6 +38,9 @@ import {
     NiveauQualificationCibleComponentComponent
 } from "./components/./niveau-qualification-cible/niveau-qualification-cible.component";
 import {CentreReferenceComponent} from "./components/centre-reference/centre-reference.component";
+import {EntrepriseFormatriceComponent} from "./components/entreprise-formatrice/entreprise-formatrice.component";
+import {SecteurComponent} from "./components/secteur/secteur.component";
+import {BrancheComponent} from "./components/branche/branche.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -74,6 +77,9 @@ import {CentreReferenceComponent} from "./components/centre-reference/centre-ref
                     {path: 'parametrage/niveauEntre', component: NiveauEntreComponentComponent},
                     {path: 'parametrage/niveauQualificationCible', component: NiveauQualificationCibleComponentComponent},
                     {path: 'parametrage/centreReference', component: CentreReferenceComponent},
+                    {path: 'parametrage/entrepriseFormatrice', component: EntrepriseFormatriceComponent},
+                    {path: 'parametrage/secteur', component: SecteurComponent},
+                    {path: 'parametrage/branche', component: BrancheComponent},
                     {path: 'uikit/matiere', component: MatiereComponent}
                 ],
             },
