@@ -26,6 +26,7 @@ export class BrancheComponent implements OnInit {
                 private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
+    this.getAllBranche();
   }
 
     public getAllBranche(){

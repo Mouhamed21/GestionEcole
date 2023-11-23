@@ -44,6 +44,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     {label: "Secteur", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/secteur']},
                     {label: "Branche", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/branche']},
+                    {label: "Filiere", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/filiere']},
                     {label: "Centre Reference", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/centreReference']},
                     {label: "Niveau D'Entree", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauEntre']},
                     {label: "Niveau De Qualification Ciblé", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauQualificationCible']},

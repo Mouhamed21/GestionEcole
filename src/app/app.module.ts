@@ -152,6 +152,7 @@ import { CentreReferenceComponent } from './components/centre-reference/centre-r
 import { EntrepriseFormatriceComponent } from './components/entreprise-formatrice/entreprise-formatrice.component';
 import { SecteurComponent } from './components/secteur/secteur.component';
 import { BrancheComponent } from './components/branche/branche.component';
+import { FiliereComponent } from './components/filiere/filiere.component';
 
 @NgModule({
     imports: [
@@ -297,6 +298,7 @@ import { BrancheComponent } from './components/branche/branche.component';
         EntrepriseFormatriceComponent,
         SecteurComponent,
         BrancheComponent,
+        FiliereComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

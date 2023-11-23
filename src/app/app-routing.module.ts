@@ -41,6 +41,7 @@ import {CentreReferenceComponent} from "./components/centre-reference/centre-ref
 import {EntrepriseFormatriceComponent} from "./components/entreprise-formatrice/entreprise-formatrice.component";
 import {SecteurComponent} from "./components/secteur/secteur.component";
 import {BrancheComponent} from "./components/branche/branche.component";
+import { FiliereComponent } from './components/filiere/filiere.component';
 // @ts-ignore
 @NgModule({
     imports: [
@@ -80,6 +81,7 @@ import {BrancheComponent} from "./components/branche/branche.component";
                     {path: 'parametrage/entrepriseFormatrice', component: EntrepriseFormatriceComponent},
                     {path: 'parametrage/secteur', component: SecteurComponent},
                     {path: 'parametrage/branche', component: BrancheComponent},
+                    {path: 'parametrage/filiere', component: FiliereComponent},
                     {path: 'uikit/matiere', component: MatiereComponent}
                 ],
             },

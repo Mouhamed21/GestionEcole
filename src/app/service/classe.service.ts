@@ -16,12 +16,7 @@ export class ClasseService {
     constructor(private httpClient: HttpClient) {
     }
 
-    getClasses() {
-        return this.httpClient.get(`${this.baseUrl}`);
-    }
-    getClasseById(id:number) {
-        return this.httpClient.get(`${this.baseUrl}/${id}`);
-    }
+
     getEffectifClasses(){
         return this.httpClient.get(`${this.baseUrl2}`);
     }
@@ -31,6 +26,12 @@ export class ClasseService {
 
     getClasseByNiveau(id:number){
         return this.httpClient.get(`${this.baseUrl1}/${id}`);
+    }
+    getClasses() {
+        return this.httpClient.get(`${this.baseUrl}`);
+    }
+    getClasseById(id:number) {
+        return this.httpClient.get(`${this.baseUrl}/${id}`);
     }
     postClasse(classe: Classe) {
         return this.httpClient.post(`${this.baseUrl}`, classe)

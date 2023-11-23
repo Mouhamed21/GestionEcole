@@ -1,0 +1,99 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h5>Gestion des Filieres</h5>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Ajouter une filiere" icon="pi pi-plus" (click)="openNew()" class="p-button-success mr-2" ></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFilieres()" [disabled]="!selectedFilieres || !selectedFilieres.length"></button>
+        </ng-template>
+
+<!--        <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template>-->
+    </p-toolbar>
+    <p-table  #dt [value]="filieres" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
+              [(selection)]="selectedFilieres" [rowHover]="true" dataKey="id"
+              [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+
+<!--                <h5 class="m-0" *ngIf="!niveau">Total: <p-badge value="{{nbrClasse}}" size="large" severity="info"></p-badge></h5>-->
+<!--                <h5 class="m-0" *ngIf="niveau">Total: <p-badge value="{{nbrClasseparNiveau}}" size="large" severity="info"></p-badge></h5>-->
+<!--                <p-autoComplete appendTo="body"  readonly="false" placeholder="Choisissez un niveau"  [dropdown]="true" [(ngModel)]="niveau"
+                                (onSelect)="getClassesByNiveau(niveau.id)"  showClear="true"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !niveau}"
+                                [suggestions]="filteredNiveaux" showEmptyMessage="Liste des classes vides"
+                                (completeMethod)="filterNiveau($event)"  field="nom"></p-autoComplete>-->
+<!--                <button *ngIf="niveau" pButton pRipple label="TOUTES LES CLASSES"  class="p-button-primary" icon="pi pi-check"
+                        (click)="getClasses()"></button>
+                <h5 *ngIf="niveau==null"></h5>-->
+                <h5 class="m-0">Liste des Filieres</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="libelle">Filiere <p-sortIcon field="libelle"></p-sortIcon></th>
+                <th pSortableColumn="branche">Branche <p-sortIcon field="branche"></p-sortIcon></th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-filiere>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="filiere"></p-tableCheckbox>
+                </td>
+                <td>{{filiere.libelle}}</td>
+                <td>{{filiere.branche.libelle}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFiliere(filiere)" pTooltip="Modifier une filiere" ></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteFiliere(filiere)" pTooltip="Supprimer une filiere" ></button>
+<!--                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary"  (click)="getOneClasse(classe)" pTooltip="Détails" ></button>-->
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+
+</div>
+<p-dialog [(visible)]="filiereDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'une Filiere" [modal]="true" styleClass="p-fluid" [closable]="false">
+    <ng-template pTemplate="content">
+        <div class="field-col">
+            <label for="libelle">Filiere</label>
+            <input type="text" pInputText id="nom"  [(ngModel)]="filiere.libelle" required autofocus />
+            <small class="p-error" *ngIf="submitted && !filiere.libelle">Filiere est obligatoire.</small>
+        </div>
+        <br>
+
+        <div class="field-col">
+            <label for="libelle">Branche</label>
+            <p-autoComplete appendTo="body" readonly="true" placeholder="Choisir une branche" [dropdown]="true" [(ngModel)]="branche"
+                            [suggestions]="filteredBranches" [multiple]="false" [ngClass]="{'ng-invalid ng-dirty' : submitted && !branche}"
+                            (completeMethod)="filterBranche($event)" id="libelle" field="libelle"></p-autoComplete>
+            <small class="p-error" *ngIf="submitted && !branche">Branche est obligatoire.</small>
+        </div>
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postFiliere()" ></button>
+    </ng-template>
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
