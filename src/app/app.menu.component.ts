@@ -37,6 +37,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Formation',
                 items: [
                     {label: "Entreprise Formatrice", icon: 'pi pi-fw pi-circle', routerLink: ['/parametrage/entrepriseFormatrice']},
+                    {label: "Responsable Formation", icon: 'pi pi-fw pi-circle', routerLink: ['/parametrage/responsableFormation']},
                 ]
             },
             {
@@ -45,7 +46,9 @@ export class AppMenuComponent implements OnInit {
                     {label: "Secteur", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/secteur']},
                     {label: "Branche", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/branche']},
                     {label: "Filiere", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/filiere']},
-                    {label: "Centre Reference", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/centreReference']},
+                    {label: "Metier", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/metier']},
+                    {label: "Centre de Reference", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/centreReference']},
+                    {label: "Departement", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/departement']},
                     {label: "Niveau D'Entree", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauEntre']},
                     {label: "Niveau De Qualification Ciblé", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauQualificationCible']},
                 ]

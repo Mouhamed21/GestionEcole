@@ -42,6 +42,9 @@ import {EntrepriseFormatriceComponent} from "./components/entreprise-formatrice/
 import {SecteurComponent} from "./components/secteur/secteur.component";
 import {BrancheComponent} from "./components/branche/branche.component";
 import { FiliereComponent } from './components/filiere/filiere.component';
+import {DepartementComponent} from "./components/departement/departement.component";
+import {MetierComponent} from "./components/metier/metier.component";
+import {ResponsableFormationComponent} from "./components/responsable-formation/responsable-formation.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -79,9 +82,12 @@ import { FiliereComponent } from './components/filiere/filiere.component';
                     {path: 'parametrage/niveauQualificationCible', component: NiveauQualificationCibleComponentComponent},
                     {path: 'parametrage/centreReference', component: CentreReferenceComponent},
                     {path: 'parametrage/entrepriseFormatrice', component: EntrepriseFormatriceComponent},
+                    {path: 'parametrage/responsableFormation', component: ResponsableFormationComponent},
                     {path: 'parametrage/secteur', component: SecteurComponent},
                     {path: 'parametrage/branche', component: BrancheComponent},
                     {path: 'parametrage/filiere', component: FiliereComponent},
+                    {path: 'parametrage/metier', component: MetierComponent},
+                    {path: 'parametrage/departement', component: DepartementComponent},
                     {path: 'uikit/matiere', component: MatiereComponent}
                 ],
             },

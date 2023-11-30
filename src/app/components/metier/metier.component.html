@@ -1,0 +1,110 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h5>Gestion des Metiers</h5>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Ajouter un metier" icon="pi pi-plus" (click)="openNew()" class="p-button-success mr-2" ></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedMetiers()" [disabled]="!selectedMetiers || !selectedMetiers.length"></button>
+        </ng-template>
+
+        <!--        <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+                </ng-template>-->
+    </p-toolbar>
+    <p-table  #dt [value]="metiers" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle','filiere','secteur']" responsiveLayout="scroll"
+              [(selection)]="selectedMetiers" [rowHover]="true" dataKey="id"
+              [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+
+                <!--                <h5 class="m-0" *ngIf="!niveau">Total: <p-badge value="{{nbrClasse}}" size="large" severity="info"></p-badge></h5>-->
+                <!--                <h5 class="m-0" *ngIf="niveau">Total: <p-badge value="{{nbrClasseparNiveau}}" size="large" severity="info"></p-badge></h5>-->
+                <!--                <p-autoComplete appendTo="body"  readonly="false" placeholder="Choisissez un niveau"  [dropdown]="true" [(ngModel)]="niveau"
+                                                (onSelect)="getClassesByNiveau(niveau.id)"  showClear="true"
+                                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !niveau}"
+                                                [suggestions]="filteredNiveaux" showEmptyMessage="Liste des classes vides"
+                                                (completeMethod)="filterNiveau($event)"  field="nom"></p-autoComplete>-->
+                <!--                <button *ngIf="niveau" pButton pRipple label="TOUTES LES CLASSES"  class="p-button-primary" icon="pi pi-check"
+                                        (click)="getClasses()"></button>
+                                <h5 *ngIf="niveau==null"></h5>-->
+                <h5 class="m-0">Liste des Metiers</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="libelle">Metier<p-sortIcon field="libelle"></p-sortIcon></th>
+                <th pSortableColumn="filiere">Filiere <p-sortIcon field="filiere"></p-sortIcon></th>
+                <th pSortableColumn="secteur">Secteur <p-sortIcon field="secteur"></p-sortIcon></th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-metier>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="metier"></p-tableCheckbox>
+                </td>
+                <td>{{metier.libelle}}</td>
+                <td>{{metier.filiere.libelle}}</td>
+                <td>{{metier.secteur.libelle}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editMetier(metier)" pTooltip="Modifier un metier" ></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteMetier(metier)" pTooltip="Supprimer un metier" ></button>
+                    <!--                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary"  (click)="getOneClasse(classe)" pTooltip="Détails" ></button>-->
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+
+</div>
+<p-dialog [(visible)]="metierDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'un Metier" [modal]="true" styleClass="p-fluid" [closable]="false">
+    <ng-template pTemplate="content">
+        <div class="field-col">
+            <label for="libelle">Metier</label>
+            <input type="text" pInputText id="nom"  [(ngModel)]="metier.libelle" required autofocus />
+            <small class="p-error" *ngIf="submitted && !metier.libelle">Filiere est obligatoire.</small>
+        </div>
+        <br>
+
+        <div class="field-col">
+            <label for="libelle">Filiere</label>
+            <p-autoComplete appendTo="body" readonly="true" placeholder="Choisir une filiere" [dropdown]="true" [(ngModel)]="filiere"
+                            [suggestions]="filteredFilieres" [multiple]="false" [ngClass]="{'ng-invalid ng-dirty' : submitted && !filiere}"
+                            (completeMethod)="filterFiliere($event)" id="libelle" field="libelle"></p-autoComplete>
+            <small class="p-error" *ngIf="submitted && !filiere">Filiere est obligatoire.</small>
+        </div>
+
+        <div class="field-col">
+            <label for="libelle">Secteur</label>
+            <p-autoComplete appendTo="body" readonly="true" placeholder="Choisir un secteur" [dropdown]="true" [(ngModel)]="secteur"
+                            [suggestions]="filteredSecteurs" [multiple]="false" [ngClass]="{'ng-invalid ng-dirty' : submitted && !secteur}"
+                            (completeMethod)="filterSecteur($event)" id="libelle" field="libelle"></p-autoComplete>
+            <small class="p-error" *ngIf="submitted && !secteur">Secteur est obligatoire.</small>
+        </div>
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postMetier()" ></button>
+    </ng-template>
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+

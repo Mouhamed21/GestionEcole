@@ -153,6 +153,9 @@ import { EntrepriseFormatriceComponent } from './components/entreprise-formatric
 import { SecteurComponent } from './components/secteur/secteur.component';
 import { BrancheComponent } from './components/branche/branche.component';
 import { FiliereComponent } from './components/filiere/filiere.component';
+import { DepartementComponent } from './components/departement/departement.component';
+import { MetierComponent } from './components/metier/metier.component';
+import { ResponsableFormationComponent } from './components/responsable-formation/responsable-formation.component';
 
 @NgModule({
     imports: [
@@ -299,6 +302,9 @@ import { FiliereComponent } from './components/filiere/filiere.component';
         SecteurComponent,
         BrancheComponent,
         FiliereComponent,
+        DepartementComponent,
+        MetierComponent,
+        ResponsableFormationComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
