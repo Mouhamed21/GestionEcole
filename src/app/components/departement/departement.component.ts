@@ -1,33 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import {Secteur} from "../../modele/secteur";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {DepartementService} from "../../service/departement.service";
 import {Departement} from "../../modele/Departement";
+import {Region} from "../../modele/region";
+import {RegionComponent} from "../region/region.component";
 
 @Component({
   selector: 'app-departement',
   templateUrl: './departement.component.html',
   styleUrls: ['./departement.component.scss'],
-  providers: [DepartementService,MessageService,ConfirmationService]
+  providers: [DepartementService,MessageService,ConfirmationService,RegionComponent]
 })
 export class DepartementComponent implements OnInit {
 
     departements:any;
-    departement: Secteur;
+    departement: Departement;
     selecteDepartements: any;
     submitted: boolean;
+    regions:any;
+    region:Region;
     departementDialog: boolean;
+    regi:any
+    filteredRegions: Region[];
     // editQualificationCibleEntreDialog: boolean;
     loading:boolean;
     erreur:boolean;
     tableau:boolean;
 
-    constructor(private departementService: DepartementService, private router: Router,
+    constructor(private departementService: DepartementService, private router: Router,private regionComponent:RegionComponent,
                 private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
     this.getAllDepartement();
+    this.regionComponent.getAllRegion();
   }
 
     public getAllDepartement(){
@@ -38,6 +44,7 @@ export class DepartementComponent implements OnInit {
             {
                 console.log(data);
                 this.departements = data;
+                this.region = null;
                 if (this.departements.length==0){
                     this.tableau=false;
                 }
@@ -71,6 +78,7 @@ export class DepartementComponent implements OnInit {
 
         if (this.departement.libelle.trim()) {
             if (this.departement.id) {
+                this.departement.region = this.region;
                 this.departementService.updateDepartement(this.departement.id,this.departement).subscribe(
                     data => {
                         console.log(data);
@@ -88,6 +96,7 @@ export class DepartementComponent implements OnInit {
             }
             else {
                 //this.niveau.annee=this.annee.getFullYear().toString();
+                this.departement.region = this.region;
                 this.departementService.postDepartement(this.departement).subscribe( data =>
                     {
                         console.log(this.departement);
@@ -111,6 +120,7 @@ export class DepartementComponent implements OnInit {
     }
     editDepartement(departement: Departement) {
         this.departement = {...departement};
+        this.region = {...departement.region}
         console.log(this.departement.libelle)
         this.departementDialog = true;
     }
@@ -157,6 +167,17 @@ export class DepartementComponent implements OnInit {
                 this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Département(x) Supprimé(s)', life: 3000});
             }
         });
+    }
+    filterRegion(event) {
+        const filter: Region[] = [];
+        const query = event.query;
+        for (let i = 0; i < this.regionComponent.regions.length; i++) {
+            let regi = this.regionComponent.regions[i];
+            if (regi.libelle.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filter.push(regi);
+            }
+        }
+        this.filteredRegions = filter;
     }
 
 }

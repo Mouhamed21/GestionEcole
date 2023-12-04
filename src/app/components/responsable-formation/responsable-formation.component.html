@@ -82,14 +82,16 @@
     <ng-template pTemplate="content">
         <div class="p-field p-col">
             <label for="prenom">Prenom</label>
-            <input type="text" pInputText id="prenom"  [(ngModel)]="responsableFormation.prenom" required autofocus />
+            <input type="text" pInputText id="prenom"  placeholder="prenom" [(ngModel)]="responsableFormation.prenom" required autofocus />
             <small class="p-error" *ngIf="submitted && !responsableFormation.prenom">Prenom est obligatoire.</small>
         </div>
+        <br>
         <div class="p-field p-col">
             <label for="nom">Nom</label>
-            <input type="text" pInputText id="nom"  [(ngModel)]="responsableFormation.nom" required autofocus />
+            <input type="text" pInputText id="nom" placeholder="nom" [(ngModel)]="responsableFormation.nom" required autofocus />
             <small class="p-error" *ngIf="submitted && !responsableFormation.nom">Nom est obligatoire.</small>
         </div>
+        <br>
         <div class="field col">
             <label for="telephone">Numero Téléphone</label>
             <p-inputMask mask="99 999-99-99" id="telephone" [(ngModel)]="responsableFormation.telephone" placeholder="77 777-66-77"></p-inputMask>

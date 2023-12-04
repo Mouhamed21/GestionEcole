@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-
 import { StyleClassModule } from 'primeng/styleclass';
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -103,29 +102,20 @@ import { FormLayoutComponent } from './components/formlayout/formlayout.componen
 import { FloatLabelComponent } from './components/floatlabel/floatlabel.component';
 import { InvalidStateComponent } from './components/invalidstate/invalidstate.component';
 import { InputComponent } from './components/input/input.component';
-import { TableComponent } from './components/table/table.component';
 import { ListComponent } from './components/list/list.component';
-import { TreeComponent } from './components/tree/tree.component';
-import { PanelsComponent } from './components/panels/panels.component';
-import { OverlaysComponent } from './components/overlays/overlays.component';
-import { MediaComponent } from './components/media/media.component';
 import { MenusComponent } from './components/menus/menus.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { MiscComponent } from './components/misc/misc.component';
-import { EmptyComponent } from './components/empty/empty.component';
 import { ChartsComponent } from './components/charts/charts.component';
 import { FileComponent } from './components/file/file.component';
 import { DocumentationComponent } from './components/documentation/documentation.component';
 import { CrudComponent } from './components/crud/crud.component';
-import { TimelineComponent } from './components/timeline/timeline.component';
 import { IconsComponent } from './components/icons/icons.component';
 import { BlocksComponent } from './components/blocks/blocks.component';
 import { PaymentComponent} from './components/menus/payment.component';
 import { ConfirmationComponent } from './components/menus/confirmation.component';
 import { PersonalComponent } from './components/menus/personal.component';
 import { SeatComponent } from './components/menus/seat.component';
-import { LandingComponent } from './components/landing/landing.component';
-
 import { CountryService } from './service/countryservice';
 import { CustomerService } from './service/customerservice';
 import { EventService } from './service/eventservice';
@@ -156,6 +146,9 @@ import { FiliereComponent } from './components/filiere/filiere.component';
 import { DepartementComponent } from './components/departement/departement.component';
 import { MetierComponent } from './components/metier/metier.component';
 import { ResponsableFormationComponent } from './components/responsable-formation/responsable-formation.component';
+import { FormationComponent } from './components/formation/formation.component';
+import { RegionComponent } from './components/region/region.component';
+import { InspectionAcademieComponent } from './components/inspection-academie/inspection-academie.component';
 
 @NgModule({
     imports: [
@@ -261,30 +254,22 @@ import { ResponsableFormationComponent } from './components/responsable-formatio
         FloatLabelComponent,
         InvalidStateComponent,
         InputComponent,
-        TableComponent,
         ListComponent,
-        TreeComponent,
-        PanelsComponent,
-        OverlaysComponent,
         MenusComponent,
         MessagesComponent,
         MessagesComponent,
         MiscComponent,
         ChartsComponent,
-        EmptyComponent,
         FileComponent,
         IconsComponent,
         DocumentationComponent,
         CrudComponent,
-        TimelineComponent,
         BlocksComponent,
         BlockViewer,
-        MediaComponent,
         PaymentComponent,
         ConfirmationComponent,
         PersonalComponent,
         SeatComponent,
-        LandingComponent,
         LoginComponent,
         ErrorComponent,
         NotfoundComponent,
@@ -305,6 +290,9 @@ import { ResponsableFormationComponent } from './components/responsable-formatio
         DepartementComponent,
         MetierComponent,
         ResponsableFormationComponent,
+        FormationComponent,
+        RegionComponent,
+        InspectionAcademieComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

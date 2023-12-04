@@ -1,0 +1,126 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h5>Gestion des Formations</h5>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Ajouter une formation" icon="pi pi-plus" (click)="openNew()" class="p-button-success mr-2" ></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFormations()"
+                    [disabled]="!selectedFormations || !selectedFormations.length"></button>
+        </ng-template>
+
+        <!--        <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+                </ng-template>-->
+    </p-toolbar>
+    <p-table  #dt [value]="formations" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
+              [(selection)]="selectedFormations" [rowHover]="true" dataKey="id"
+              [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+
+                <!--                <h5 class="m-0" *ngIf="!niveau">Total: <p-badge value="{{nbrClasse}}" size="large" severity="info"></p-badge></h5>-->
+                <!--                <h5 class="m-0" *ngIf="niveau">Total: <p-badge value="{{nbrClasseparNiveau}}" size="large" severity="info"></p-badge></h5>-->
+                <!--                <p-autoComplete appendTo="body"  readonly="false" placeholder="Choisissez un niveau"  [dropdown]="true" [(ngModel)]="niveau"
+                                                (onSelect)="getClassesByNiveau(niveau.id)"  showClear="true"
+                                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !niveau}"
+                                                [suggestions]="filteredNiveaux" showEmptyMessage="Liste des classes vides"
+                                                (completeMethod)="filterNiveau($event)"  field="nom"></p-autoComplete>-->
+                <!--                <button *ngIf="niveau" pButton pRipple label="TOUTES LES CLASSES"  class="p-button-primary" icon="pi pi-check"
+                                        (click)="getClasses()"></button>
+                                <h5 *ngIf="niveau==null"></h5>-->
+                <h5 class="m-0">Liste des Formations</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="libelle">Formation <p-sortIcon field="libelle,datedebut,duree,datefinprevue"></p-sortIcon></th>
+                <th pSortableColumn="datedebut">Date de début <p-sortIcon field="datedebut"></p-sortIcon></th>
+                <th pSortableColumn="duree">Durée <p-sortIcon field="duree"></p-sortIcon></th>
+                <th pSortableColumn="datefinprevue">Date fin prevue <p-sortIcon field="datefinprevue"></p-sortIcon></th>
+                <th pSortableColumn="responsableFormation">Responsable <p-sortIcon field="responsableFormation"></p-sortIcon></th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-formation>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="formation"></p-tableCheckbox>
+                </td>
+                <td>{{formation.libelle}}</td>
+                <td>{{formation.dateDebut | date: 'dd/MM/yyyy'}}</td>
+                <td>{{formation.duree}} an(s)</td>
+                <td>{{formation.datefinprevue}}</td>
+                <td>{{formation.responsableFormation.prenom}} {{formation.responsableFormation.nom}} </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFormation(formation)" pTooltip="Modifier une formation" ></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteFormation(formation)" pTooltip="Supprimer une formation" ></button>
+                    <!-- <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary"  (click)="getOneClasse(classe)" pTooltip="Détails" ></button>-->
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+
+</div>
+<p-dialog [(visible)]="formationDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'une Formation" [modal]="true" styleClass="p-fluid" [closable]="false">
+    <ng-template pTemplate="content">
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="libelle">Formation</label>
+                <input type="text"  pInputText id="libelle" placeholder="Nom" [(ngModel)]="formation.libelle" required autofocus />
+                <small class="p-error" *ngIf="submitted && !formation.libelle">Formation est obligatoire.</small>
+            </div>
+            <div class="field col">
+                <label for="datedebut">Date de Debut</label>
+                <p-calendar *ngIf="!formation.id" appendTo="body"  placeholder="DD-MM-YYYY" id="dateDebut" [showIcon]="true" [maxDate]="dateJour"
+                            [(ngModel)]="formation.dateDebut" required></p-calendar>
+                <p-calendar *ngIf="formation.id" appendTo="body"  placeholder="{{formation.dateDebut |date:'dd-MM-yyyy'}}" id="dateDebut" [showIcon]="true" [maxDate]="dateJour"
+                            [(ngModel)]="formation.dateDebut" required></p-calendar>
+                <small class="p-error" *ngIf="submitted && !formation.dateDebut">Date de Debut est obligatoire.</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="duree">Duree</label>
+                <input type="number" pInputText id="duree" [(ngModel)]="formation.duree" required autofocus />
+                <small class="p-error" *ngIf="submitted && !formation.duree">Durée est obligatoire.</small>
+            </div>
+            <div class="field col">
+                <label for="prenom">Responsable Formation</label>
+                <p-autoComplete appendTo="body" readonly="true" placeholder="Choisir un responsable de Formation" [dropdown]="true" [(ngModel)]="responsableFormation"
+                                [suggestions]="filteredResponsableFormations" [multiple]="false" [ngClass]="{'ng-invalid ng-dirty' : submitted && !responsableFormation}"
+                                (completeMethod)="filterResponsableFormation($event)" id="prenom" field="prenom"></p-autoComplete>
+                <small class="p-error" *ngIf="submitted && !responsableFormation">Responsable Formation est obligatoire.</small>
+            </div>
+        </div>
+        <div class="espace">
+
+        </div>
+
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postFormation()" ></button>
+    </ng-template>
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+

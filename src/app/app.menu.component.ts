@@ -34,23 +34,37 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'Formation',
+                label: 'formation',
                 items: [
-                    {label: "Entreprise Formatrice", icon: 'pi pi-fw pi-circle', routerLink: ['/parametrage/entrepriseFormatrice']},
-                    {label: "Responsable Formation", icon: 'pi pi-fw pi-circle', routerLink: ['/parametrage/responsableFormation']},
+                    {label: "Formations", icon: 'pi pi-fw pi-circle', routerLink: ['/formation/formation']},
+                    {label: "Entreprise Formatrices", icon: 'pi pi-fw pi-circle', routerLink: ['/formation/entrepriseFormatrice']},
+                    {label: "Responsables Formation", icon: 'pi pi-fw pi-circle', routerLink: ['/formation/responsableFormation']},
+                    {label: "Centres de Reference", icon: 'pi pi-fw pi-eye', routerLink: ['/formation/centreReference']},
                 ]
             },
             {
-                label: 'Parametrage',
+                label: 'Lieux',
                 items: [
-                    {label: "Secteur", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/secteur']},
-                    {label: "Branche", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/branche']},
-                    {label: "Filiere", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/filiere']},
-                    {label: "Metier", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/metier']},
-                    {label: "Centre de Reference", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/centreReference']},
-                    {label: "Departement", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/departement']},
-                    {label: "Niveau D'Entree", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauEntre']},
-                    {label: "Niveau De Qualification Ciblé", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/parametrage/niveauQualificationCible']},
+                    {label: "Regions", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/lieux/region']},
+                    {label: "Departements", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/lieux/departement']},
+                    {label: "Inspections d'Academie", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/lieux/inspection']},
+                ]
+            },
+            {
+                label: 'qualifications',
+                items: [
+                    {label: "Secteurs", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/qualifications/secteur']},
+                    {label: "Branches", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/qualifications/branche']},
+                    {label: "Filieres", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/qualifications/filiere']},
+                    {label: "Metiers", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/qualifications/metier']},
+                ]
+            },
+            {
+                label: 'Niveau',
+                items: [
+                    {label: "D'Entrees", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/niveau/niveauEntre']},
+                    {label: "De Qualification Ciblé", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/niveau/niveauQualificationCible']},
+                    //{label: "eleve", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/eleve']},
                 ]
             },
          /*   {

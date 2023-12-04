@@ -1,6 +1,6 @@
 import {Region} from "./region";
 
-export class Departement{
+export class InspectionAcademie{
     constructor(
         public id?: number,
         public libelle?: string,

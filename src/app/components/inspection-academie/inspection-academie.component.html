@@ -1,12 +1,12 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h5>Gestion des Départements</h5>
+    <h5>Gestion des Inspections D'Académie</h5>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Ajouter un Département" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedDepartement()"
-                    [disabled]="!selecteDepartements || !selecteDepartements.length"></button>
+            <button pButton pRipple label="Ajouter une Inspection" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedInspectionAcademie()"
+                    [disabled]="!selecteInspectionAcademies || !selecteInspectionAcademies.length"></button>
         </ng-template>
 
         <!--        <ng-template pTemplate="right">
@@ -24,16 +24,16 @@
     </div>
     <p-table *ngIf="!tableau">
         <ng-template pTemplate="header">
-            <p class="vides">La liste des Departements est vide</p>
+            <p class="vides">La liste des Inspections est vide</p>
         </ng-template>
 
     </p-table>
-    <p-table  #dt [value]="departements" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
-              [(selection)]="selecteDepartements" [rowHover]="true" dataKey="id"
+    <p-table  #dt [value]="inspectionAcademies" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle','region']" responsiveLayout="scroll"
+              [(selection)]="selecteInspectionAcademies" [rowHover]="true" dataKey="id"
               [rowsPerPageOptions]="[10,25,50]" *ngIf="tableau">
         <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                <h5 class="m-0">Liste des Département</h5>
+                <h5 class="m-0">Liste des Inspections d'Academie</h5>
                 <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
@@ -46,22 +46,22 @@
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
 
-                <th pSortableColumn="libelle">Departement <p-sortIcon field="libelle"></p-sortIcon></th>
+                <th pSortableColumn="libelle">Inspection d'Academie <p-sortIcon field="libelle"></p-sortIcon></th>
                 <th pSortableColumn="libelle">Region <p-sortIcon field="libelle"></p-sortIcon></th>
 
                 <th>Actions</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-departement>
+        <ng-template pTemplate="body" let-inspectionAcademie>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="departement"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="inspectionAcademie"></p-tableCheckbox>
                 </td>
-                <td>{{departement.libelle}}</td>
-                <td>{{departement.region.libelle}}</td>
+                <td>{{inspectionAcademie.libelle}}</td>
+                <td>{{inspectionAcademie.region.libelle}}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  pTooltip="Modifier un departement" (click)="editDepartement(departement)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"  pTooltip="Supprimer un departement" (click)="deleteDepartement(departement)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  pTooltip="Modifier une inspection" (click)="editInspectionAcademie(inspectionAcademie)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"  pTooltip="Supprimer une inspection" (click)="deleteInspectionAcademie(inspectionAcademie)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -75,12 +75,12 @@
     </p-table>
 
 </div>
-<p-dialog [(visible)]="departementDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'un Département" [modal]="true" [closable]="false" styleClass="p-fluid">
+<p-dialog [(visible)]="inspectionAcademiesDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'une Inspection d'Académie" [modal]="true" [closable]="false" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field p-col">
             <label for="libelle">Libelle</label>
-            <input type="text" pInputText id="libelle"  [(ngModel)]="departement.libelle" required autofocus />
-            <small class="p-error" *ngIf="submitted && !departement.libelle">Libelle est obligatoire.</small>
+            <input type="text" pInputText id="libelle"  [(ngModel)]="inspectionAcademie.libelle" required autofocus />
+            <small class="p-error" *ngIf="submitted && !inspectionAcademie.libelle">Libelle est obligatoire.</small>
         </div>
         <br>
         <div class="field-col">
@@ -98,10 +98,11 @@
     </div>
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postDepartement()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postInspectionAcademie()"></button>
     </ng-template>
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
 
 

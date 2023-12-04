@@ -51,6 +51,7 @@ export class FiliereComponent implements OnInit {
         console.log(this.branche)
         if (this.filiere.libelle.trim() && this.branche) {
             if (this.filiere.id) {
+                this.filiere.branche = this.branche;
                 this.filiereService.updateFiliere(this.filiere.id,this.filiere).subscribe(
                     data => {
                         console.log(data);

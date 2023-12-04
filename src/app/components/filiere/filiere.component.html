@@ -74,11 +74,10 @@
     <ng-template pTemplate="content">
         <div class="field-col">
             <label for="libelle">Filiere</label>
-            <input type="text" pInputText id="nom"  [(ngModel)]="filiere.libelle" required autofocus />
+            <input type="text" pInputText id="libelle"  [(ngModel)]="filiere.libelle" required autofocus />
             <small class="p-error" *ngIf="submitted && !filiere.libelle">Filiere est obligatoire.</small>
         </div>
         <br>
-
         <div class="field-col">
             <label for="libelle">Branche</label>
             <p-autoComplete appendTo="body" readonly="true" placeholder="Choisir une branche" [dropdown]="true" [(ngModel)]="branche"

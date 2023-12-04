@@ -1,0 +1,43 @@
+$height: 20px;
+
+.espace{
+    height: $height;
+}
+
+.retour{
+    display: flex;
+}
+#retour{
+    position: relative;
+    bottom: 10px;
+    left: 81%;
+
+}
+
+a{
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+}
+.spinner
+{
+    position: absolute;
+    left: 45%;
+    top: 45%;
+    justify-content: center;
+}
+
+
+.flex-column {
+    flex-direction:  row !important;
+}
+
+.Alleleve
+{
+    display: flex;
+}
+
+.effectif{
+    margin-top: 1%;
+}
+

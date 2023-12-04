@@ -65,6 +65,8 @@ export class MetierComponent implements OnInit {
         console.log(this.metier)
         if (this.metier.libelle.trim() && this.filiere && this.secteur) {
             if (this.metier.id) {
+                this.metier.filiere = this.filiere;
+                this.metier.secteur = this.secteur;
                 this.metierService.updateMetier(this.metier.id,this.metier).subscribe(
                     data => {
                         console.log(data);
