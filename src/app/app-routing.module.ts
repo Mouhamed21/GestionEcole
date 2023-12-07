@@ -40,6 +40,7 @@ import {ResponsableFormationComponent} from "./components/responsable-formation/
 import {FormationComponent} from "./components/formation/formation.component";
 import {RegionComponent} from "./components/region/region.component";
 import {InspectionAcademieComponent} from "./components/inspection-academie/inspection-academie.component";
+import {ObservationComponent} from "./components/observation/observation.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -68,7 +69,6 @@ import {InspectionAcademieComponent} from "./components/inspection-academie/insp
                     {path: 'uikit/niveau', component: NiveauComponent},
                     {path: 'niveau/niveauEntre', component: NiveauEntreComponentComponent},
                     {path: 'niveau/niveauQualificationCible', component: NiveauQualificationCibleComponentComponent},
-                    {path: 'formation/centreReference', component: CentreReferenceComponent},
                     {path: 'formation/entrepriseFormatrice', component: EntrepriseFormatriceComponent},
                     {path: 'formation/responsableFormation', component: ResponsableFormationComponent},
                     {path: 'formation/formation', component: FormationComponent},
@@ -79,6 +79,8 @@ import {InspectionAcademieComponent} from "./components/inspection-academie/insp
                     {path: 'lieux/region', component: RegionComponent},
                     {path: 'lieux/departement', component: DepartementComponent},
                     {path: 'lieux/inspection', component: InspectionAcademieComponent},
+                    {path: 'lieux/centreReference', component: CentreReferenceComponent},
+                    {path: 'apprenant/observation', component: ObservationComponent},
                     {path: 'uikit/matiere', component: MatiereComponent}
                 ],
             },

@@ -1,0 +1,96 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h5>Gestion des Observations</h5>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Ajouter une Observation" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedObservations()"
+                    [disabled]="!selectedObservations || !selectedObservations.length"></button>
+        </ng-template>
+
+        <!--        <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+                </ng-template>-->
+    </p-toolbar>
+
+    <div *ngIf="loading==true">
+        <h5 class="spinner">Veuillez Patienter...</h5>
+        <p-progressSpinner class="spinner"></p-progressSpinner>
+    </div>
+    <div *ngIf="erreur==true && loading==false" class="alert alert-danger" >
+        Serveur Indisponible
+    </div>
+    <p-table *ngIf="!tableau">
+        <ng-template pTemplate="header">
+            <p class="vides">La liste des Observations est vide</p>
+        </ng-template>
+
+    </p-table>
+    <p-table  #dt [value]="observations" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
+              [(selection)]="selectedObservations" [rowHover]="true" dataKey="id"
+              [rowsPerPageOptions]="[10,25,50]" *ngIf="tableau">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Liste des Observations</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
+
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-observation>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="observation"></p-tableCheckbox>
+                </td>
+                <td>{{observation.libelle}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  pTooltip="Modifier une observation" (click)="editObservation(observation)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"  pTooltip="Supprimer une observation" (click)="deleteObservation(observation)"></button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+
+</div>
+<p-dialog [(visible)]="observationDialog" [style]="{width: 'auto'}" header="Ajout/Modification d'une Observation" [modal]="true" [closable]="false" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field p-col">
+            <label for="libelle">Libelle</label>
+            <input type="text" pInputText id="libelle"  [(ngModel)]="observation.libelle" required autofocus />
+            <small class="p-error" *ngIf="submitted && !observation.libelle">Libelle est obligatoire.</small>
+        </div>
+
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-success" (click)="postObservation()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+

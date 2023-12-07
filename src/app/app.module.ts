@@ -149,6 +149,7 @@ import { ResponsableFormationComponent } from './components/responsable-formatio
 import { FormationComponent } from './components/formation/formation.component';
 import { RegionComponent } from './components/region/region.component';
 import { InspectionAcademieComponent } from './components/inspection-academie/inspection-academie.component';
+import { ObservationComponent } from './components/observation/observation.component';
 
 @NgModule({
     imports: [
@@ -293,6 +294,7 @@ import { InspectionAcademieComponent } from './components/inspection-academie/in
         FormationComponent,
         RegionComponent,
         InspectionAcademieComponent,
+        ObservationComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

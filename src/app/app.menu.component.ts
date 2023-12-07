@@ -34,12 +34,18 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
+                label: 'Apprenant',
+                items:[
+                    {label: 'Observations',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/apprenant/observation']}
+                ]
+            },
+            {
                 label: 'formation',
                 items: [
                     {label: "Formations", icon: 'pi pi-fw pi-circle', routerLink: ['/formation/formation']},
                     {label: "Entreprise Formatrices", icon: 'pi pi-fw pi-circle', routerLink: ['/formation/entrepriseFormatrice']},
                     {label: "Responsables Formation", icon: 'pi pi-fw pi-circle', routerLink: ['/formation/responsableFormation']},
-                    {label: "Centres de Reference", icon: 'pi pi-fw pi-eye', routerLink: ['/formation/centreReference']},
+
                 ]
             },
             {
@@ -48,6 +54,7 @@ export class AppMenuComponent implements OnInit {
                     {label: "Regions", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/lieux/region']},
                     {label: "Departements", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/lieux/departement']},
                     {label: "Inspections d'Academie", icon: 'pi pi-fw pi-chart-bar', routerLink: ['/lieux/inspection']},
+                    {label: "Centres de Reference", icon: 'pi pi-fw pi-eye', routerLink: ['/lieux/centreReference']},
                 ]
             },
             {
